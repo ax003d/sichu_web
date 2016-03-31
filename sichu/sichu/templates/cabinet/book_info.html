@@ -1,0 +1,213 @@
+{% extends "cabinet/sc_base.html" %}
+{% block header %}
+<link rel="stylesheet" href="/static/js/themes/sichu/jquery.ui.all.css">
+<link rel="stylesheet" href="/static/css/book_info.css">
+<title>私橱网  - 和朋友分享您的宝贝</title>
+{% endblock %}
+
+{% block content-center %}
+<div class="pt15 pl30 pr30">
+	<a href="/" class="block f14 color10 no_unl goback">&lt; 返回</a>
+	<div class="bookinfo">
+		<div class="fl">
+			<img class="w120 h140" alt="{{ book.title }}" src="{{ book.get_image_url }}" />
+		</div>
+		<ul class="fl ml16 lh16 w450">
+			<li>
+				<span class="f16 color6">{{ book.title }}</span>
+			</li>
+			<li class="mt16">
+				<span class="f12 color11">作者:&nbsp;</span><span class="f12 color8">{{ book.author }}</span>
+			</li>
+			<li>
+				<span class="f12 color11">ISBN:&nbsp;</span><span class="f12 color8">{{ book.isbn }}</span>
+			</li>
+			<li>
+				<span class="pt5"><img src="/static/img/douban.png" alt="豆瓣图标" /></span><span class="ml8"><a href="http://book.douban.com/subject/{{ book.douban_id }}/" class="f12 color11 no_unl" target="_blank">豆瓣链接</a></span>
+			</li>
+<!--
+			<li>
+				<span class="f12 color11">Tags:</span><span class="f12 color8">
+					{% for i in book.tags %}
+					{{ i.name }}
+					{% endfor %}
+				</span>
+			</li>-->
+
+			<li class="mt25">
+				<form id="form_book_want" action="/cabinet/book_want/" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="book_id" id="book_id" value="{{ book.id }}" />
+					<a href="/cabinet/book/{{ book.id }}/" id="btnWant"></a>
+				</form>
+			</li>
+		</ul>
+		<div class="cb"></div>
+	</div><!-- bookinfo -->
+	<h3 class="f16 fb color11 mb10 mt16">谁有这本书</h3>
+	<div class="bookowns mt16">
+		<table class="w tc tblBookOwns">
+			<thead>
+				<tr class="fst f14 fb color16">
+					<th></th>
+					<th class="tc">拥有者</th>
+					<th class="tc">备注</th>
+					<th class="tc">实体书</th>
+					<th class="tc">电子书</th>
+					<!-- <th class="tc"></th> -->
+				</tr>
+			</thead>
+			<tbody class="f12 color10">
+				{% for bo in book.available_bookownership %}
+				<tr>
+					<td class="w40 pl10 pt10">
+						<a href="/cabinet/user/{{ bo.owner.id }}/" target="_blank">
+							<img width="40" height="40" alt="Avatar for {{ bo.owner.get_nickname }}" src="{{ bo.owner.get_avatar }}">
+						</a>
+					</td>
+					<td class="w80"><a href="/cabinet/user/{{ bo.owner.id }}/" target="_blank" class="userinfo color8 no_unl">{{ bo.owner.get_nickname }}</a></td>
+					<td align="center">{{ bo.remark }}</td>
+					<td align="center" class="w80"> {% ifequal bo.status "1" %} <a href="/cabinet/bookownership/{{ bo.id }}/" class="btnBorrow" id="btnBorrow_{{ bo.id }}"></a> {% else %}
+					{{ bo.get_status_display }}
+					{% endifequal %} </td>
+					<td align="center" class="w80"> {% if bo.has_ebook %} <a href="/cabinet/bookownership/{{ bo.id }}/" class="btnEbookReq"></a> {% else %}
+					无
+					{% endif %} </td>
+					<!-- <td class="w40"><img src="/static/img/borrow_rec.png" /></td> -->
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div><!-- bookowns -->
+</div>
+<div id="dlg_borrow_request" class="dialog none">
+	<div class="dialog-title">
+		<p>
+			申请借阅书籍
+		</p>
+		<a href="#"></a>
+	</div>
+	<div class="dialog-content">
+		<div class="step1">
+			<img src="/static/img/borrow_request_1.png" alt="step1" />
+			<div class="fl mt10 ml10 w120">
+				<img class="w120 h140" alt="{{ book.title }}" src="{{ book.get_image_url }}" />
+				<p class="f12 color6 tc">{{ book.title }}</p>
+			</div>
+			<form id="form_borrow_request" action="/cabinet/borrow_request/" method="post" class="mt10 ml10">
+				{% csrf_token %}
+				<fieldset>
+					<p class="ml10 f12" id="owner">拥有者：XXX</p>
+					<input type="hidden" name="bo_ship" id="bo_ship" />
+					<label for="planed_return_date" class="ml10 f12">归还日期：</label>
+					<input type="date" name="planed_return_date" id="planed_return_date" class="date-picker"/>
+					<textarea name="remark" id="remark" class="ml10">附言(如您的联系方式等)</textarea>
+					<input type="image" src="/static/img/btn_borrowreq.png" class="fr mr20 mb10"/>
+				</fieldset>
+			</form><!-- form_borrow_request -->
+			<div class="cb"></div>
+		</div><!-- step1 -->
+		<div class="step2 none">
+			<img src="/static/img/borrow_request_2.png" alt="step2" />
+			<img src="/static/img/ok.png" alt="ok" class="fl mt10 ml30">
+			<p class="f21 fyh color15 fl mt25 ml10">申请借阅已发送，请耐心等待对方回复!</p>
+			<a href="#" class="fr mr20 mb10 mt20" id="btnRequestOk"><img src="/static/img/btn_sure.png" alt="sure" /></a>
+			<div class="cb"></div>
+		</div>
+	</div>
+</div><!-- dlg_borrow_request -->
+{% endblock %}
+
+{% block script %} <script type="text/javascript" src="/static/js/ui/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="/static/js/ui/jquery.ui.core.js"></script>
+<script type="text/javascript" src="/static/js/ui/jquery.ui.datepicker.js"></script>
+<script type="text/javascript">
+	var form_book_want = function() {
+		$("#form_book_want").submit(function(event) {
+			event.preventDefault();
+			// console.debug("form book want");
+			var vals = $(this).serialize();
+			$.post("/cabinet/book_want/", vals, function(json) {
+				if(json['result'] == true) {
+					alert("收藏成功!");
+				} else {
+					alert("收藏失败!");
+				}
+			});
+		});
+	};
+	// form_book_want
+	
+	var form_borrow_request = function() {
+		$("#form_borrow_request").submit(function(event) {
+			event.preventDefault();
+			var vals = $(this).serialize();
+			$.post("/cabinet/borrow_request/", vals, function(json) {
+				if(json['success'] == true) {
+					$("#dlg_borrow_request .step1").hide();
+					$("#dlg_borrow_request .step2").show();
+				} else {
+					alert("发送借阅请求失败失败!\n" + json['message']);
+				}
+			});
+		});
+	};
+	// form_borrow_request
+
+	$(document).ready(function() {
+		$(".goback").click(function(event) {
+			event.preventDefault();
+			history.go(-1);
+		});
+		form_book_want();
+		$("#btnWant").click(function(event) {
+			event.preventDefault();
+			if ( $(".form_login").length != 0 ) {
+				alert("您还没有登录!");
+				return;
+			}			
+			$("#form_book_want").submit();
+		});
+
+		$(".date-picker").datepicker({
+			"dateFormat" : "yy-mm-dd"
+		});
+		
+		$(".btnBorrow").click(function(event) {
+			event.preventDefault();
+			if ( $(".form_login").length != 0 ) {
+				alert("登录之后即可发送借阅请求!");
+				return;
+			}
+			$("#form_borrow_request #owner").text("拥有者：" + $($(this).parent().parent().children()[1]).text());
+			$("#form_borrow_request #bo_ship").val(this.id.split('_')[1]);
+			cabinet.show_dialog($("#dlg_borrow_request"));
+		});
+		
+		var remark_tips = "附言(如您的联系方式等)";
+		form_borrow_request();
+		$("#form_borrow_request #remark").focus(function() {
+			// console.debug("focus");
+			if ( $(this).val() == remark_tips ) {
+				$(this).val("");
+			}			
+		}).blur(function() {			
+			if ( $(this).val() == "" ) {
+				$(this).val(remark_tips);
+			}
+		});
+		
+		$("#btnRequestOk").click(function(event) {
+			event.preventDefault();
+			// console.log("request ok");
+			$("#form_borrow_request #bo_ship").val("");
+			$("#form_borrow_request #planed_return_date").val("");
+			$("#form_borrow_request #remark").val(remark_tips);
+			$("#dlg_borrow_request .step1").show();
+			$("#dlg_borrow_request .step2").hide();
+			cabinet.close_dialog($("#dlg_borrow_request"));
+		});
+	});
+
+</script>
+{% endblock %} 

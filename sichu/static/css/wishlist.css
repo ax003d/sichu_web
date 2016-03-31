@@ -1,0 +1,12 @@
+.book-page {
+	margin-left: 49px;
+}
+.book-item {
+	width: 120px;
+	height: 166px;
+	border: solid 1px #B9B9B9;
+	margin-top: 20px;
+	margin-right: 20px;
+	float: left;
+	padding: 5px;
+}

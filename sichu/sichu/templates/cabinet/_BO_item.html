@@ -1,0 +1,7 @@
+<tr>
+	<td><img src="{{ bo.book.get_image_url }}" alt="{{ bo.book.title }}"></td>
+	<td><a href="/cabinet/bookownership/{{ bo.id }}/" class="bookownershipinfo">{{ bo.book.title }}</a></td>
+	<td>{{ bo.status }}</td>
+	<td>{% if bo.has_ebook %}有{% else %}无{% endif %}</td>
+	<td>{{ bo.remark }}</td>
+</tr>

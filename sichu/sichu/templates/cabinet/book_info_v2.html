@@ -1,0 +1,158 @@
+{% extends "cabinet/bs_base.html" %}
+
+{% block header %}
+<title>私橱网  - 和朋友分享您的宝贝</title>
+{% endblock %}
+
+{% block content-profile %}
+{% if user.username %}
+<div class="pull-left">
+	<img width="60" height="60" alt="Avatar for {{ user.get_nickname }}" src="{{ user.get_avatar }}" class="img-polaroid">
+</div>
+<div class="username">
+	<p>
+		{{ user.get_nickname }}
+	</p>
+</div>
+<div class="badges clearfix">
+	{% with user.get_weibo as weibo %}
+	{% if weibo %}
+	<a href="http://weibo.com/{{ weibo.uid }}" target="_blank" data-toggle="tooltip" title="{{ weibo.screen_name }}"><img src="/static/img/sina_32x32.png" /></a>
+	{% else %}
+	<img src="/static/img/sina_32x32_disabled.png" />
+	{% endif %}
+	{% endwith %}
+</div>
+<table class="stats text-center">
+	<thead>
+		<tr>
+			<th class="br_dot">藏书量</th>
+			<th class="br_dot">借出</th>
+			<th>借入</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="br_dot">{{ user.book_num }}</td>
+			<td class="br_dot">{{ user.book_loaned|length }}</td>
+			<td>{{ user.bookborrowrecord_set.count }}</td>
+		</tr>
+	</tbody>
+</table>
+<ul class="nav nav-pills nav-stacked nav-sidebar">
+	<li >
+		<a href="/cabinet/sys_msgs/" class="icon-envelope">&nbsp;&nbsp;&nbsp;&nbsp;信件&nbsp;&nbsp;{% if user.message_num %}<span class="badge badge-important">{{ user.message_num }}</span>{% endif %}</a>
+	</li>
+	<li>
+		<a href="/cabinet/personal_info/" class="icon-user">&nbsp;&nbsp;&nbsp;&nbsp;个人资料</a>
+	</li>
+	<li>
+		<a href="/cabinet/mybookshelf/" class="icon-book">&nbsp;&nbsp;&nbsp;&nbsp;我的书橱</a>
+	</li>
+	<li>
+		<a href="/cabinet/friends/" class="icon-group">&nbsp;&nbsp;&nbsp;&nbsp;橱友</a>
+	</li>
+	<li>
+		<a href="/accounts/logout/" class="icon-signout">&nbsp;&nbsp;&nbsp;&nbsp;退出</a>
+	</li>
+</ul>
+{% else %}
+<form class="form_login" action="/accounts/login/" method="post">
+	{% csrf_token %}
+	<fieldset>
+		<legend>
+			登录
+		</legend>
+		<input type="text" id="username" name="username" placeholder="用户名" />
+		<input type="password" id="password" name="password" placeholder="密码" />
+		<div class="control-group">
+			<div class="controls">
+				<a href="/registration/password_reset/">忘记密码?</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/cabinet/register/" class="btn">注册</a>
+				<button type="submit" class="btn btn-primary pull-right">
+					登录
+				</button>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<a href="{{ weibo }}" class="btn btn-primary btn-block"><i class="icon-weibo"></i>&nbsp;&nbsp;用微博帐号登录</a>
+			</div>
+		</div>
+	</fieldset>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block content-news %}
+<img src="/static/img/the_news.png" alt="the news" />
+<ul class="unstyled">
+	{% for n in news %}
+	<li class="news-item">
+		<p>
+			<a href="/cabinet/user/{{ n.lead.id }}/" class="userinfo color6">{{ n.lead.get_nickname }}</a>{{ n.news|safe }}
+		</p>
+		<p class="pull-right">
+			{{ n.datetime|date:"c" }}
+		</p>
+		<div class="clearfix"></div>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}
+
+{% block content-center %}
+<div style="padding: 24px;">
+	<div>
+		<img alt="{{ book.title }}" src="{{ book.get_image_url }}" class="img-polaroid pull-left" style="width: 120px; height: 140px;" />
+		<ul class="unstyled" style="margin-left: 156px;">
+			<li>
+				<h4>{{ book.title }}</h4>
+			</li>
+			<li>
+				<span class="icon-user"> 作者:&nbsp;</span><span>{{ book.author }}</span>
+			</li>
+			<li>
+				<span class="icon-barcode"> ISBN:&nbsp;</span><span>{{ book.isbn }}</span>
+			</li>
+			<li>
+				<span><img src="/static/img/douban.png" alt="豆瓣图标" /></span><span><a href="http://book.douban.com/subject/{{ book.douban_id }}/" target="_blank"> 豆瓣链接</a></span>
+			</li>
+			<li>
+				<span class="icon-tags"> 标签: </span>{% for i in book.tags %} <span class="label label-info">{{ i.name }}</span> {% endfor %}
+			</li>
+		</ul>
+	</div>
+	<div class="clearfix"></div>
+	<h3>谁有这本书</h3>
+	<div class="bookowns">
+		<table class="table table-hover tbl_bookowns">
+			<thead>
+				<tr>
+					<th></th>
+					<th class="tc">拥有者</th>
+					<th class="tc">备注</th>
+					<th class="tc">实体书</th>
+					<th class="tc">电子书</th>
+				</tr>
+				<tbody class="f12 color10">
+					{% for bo in book.available_bookownership %}
+					<tr>
+						<td><a href="/cabinet/user/{{ bo.owner.id }}/" target="_blank"> <img alt="Avatar for {{ bo.owner.get_nickname }}" src="{{ bo.owner.get_avatar }}" class="img-polaroid" style="width: 40px; height: 40px;"> </a></td>
+						<td><a href="/cabinet/user/{{ bo.owner.id }}/" target="_blank" class="userinfo color8 no_unl">{{ bo.owner.get_nickname }}</a></td>
+						<td>{{ bo.remark }}</td>
+						<td> {% ifequal bo.status "1" %} <a href="/cabinet/bookownership/{{ bo.id }}/" class="btnBorrow" id="btnBorrow_{{ bo.id }}"></a> {% else %}
+						{{ bo.get_status_display }}
+						{% endifequal %} </td>
+						<td> {% if bo.has_ebook %} <a href="/cabinet/bookownership/{{ bo.id }}/" class="btnEbookReq"></a> {% else %}
+						无
+						{% endif %} </td>
+					</tr>
+					{% endfor %}
+				</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

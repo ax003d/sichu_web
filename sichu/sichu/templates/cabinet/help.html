@@ -1,0 +1,148 @@
+{% extends "cabinet/bs_base.html" %}
+
+{% block header %}
+<title>借阅说明 &nbsp; | &nbsp; 私橱网  - 和朋友分享您的宝贝</title>
+{% endblock %}
+
+{% block content-profile %}
+{% if user.username %}
+<div class="pull-left">
+	<img width="60" height="60" alt="Avatar for {{ user.get_nickname }}" src="{{ user.get_avatar }}" class="img-polaroid">
+</div>
+<div class="username">
+	<p>
+		{{ user.get_nickname }}
+	</p>	
+</div>
+<div class="badges clearfix">
+	{% with user.get_weibo as weibo %}
+	{% if weibo %}
+	<a href="http://weibo.com/{{ weibo.uid }}" target="_blank" data-toggle="tooltip" title="{{ weibo.screen_name }}"><img src="/static/img/sina_32x32.png" /></a>
+	{% else %}
+	<img src="/static/img/sina_32x32_disabled.png" />
+	{% endif %}
+	{% endwith %}
+</div>
+<table class="stats text-center">
+	<thead>
+		<tr>
+			<th class="br_dot">藏书量</th>
+			<th class="br_dot">借出</th>
+			<th>借入</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="br_dot">{{ user.book_num }}</td>
+			<td class="br_dot">{{ user.book_loaned|length }}</td>
+			<td>{{ user.bookborrowrecord_set.count }}</td>
+		</tr>
+	</tbody>
+</table>
+<ul class="nav nav-pills nav-stacked nav-sidebar">
+	<li ><a href="/cabinet/sys_msgs/" class="icon-envelope">&nbsp;&nbsp;&nbsp;&nbsp;信件&nbsp;&nbsp;{% if user.message_num %}<span class="badge badge-important">{{ user.message_num }}</span>{% endif %}</a></li>
+	<li><a href="/cabinet/personal_info/" class="icon-user">&nbsp;&nbsp;&nbsp;&nbsp;个人资料</a></li>
+	<li><a href="/cabinet/mybookshelf/" class="icon-book">&nbsp;&nbsp;&nbsp;&nbsp;我的书橱</a></li>
+	<li><a href="/cabinet/friends/" class="icon-group">&nbsp;&nbsp;&nbsp;&nbsp;橱友</a></li>
+	<li><a href="/accounts/logout/" class="icon-signout">&nbsp;&nbsp;&nbsp;&nbsp;退出</a></li>
+</ul>
+{% else %} 
+<form class="form_login" action="/accounts/login/" method="post">
+	{% csrf_token %}
+	<fieldset>
+		<legend>
+			登录
+		</legend>
+		<input type="text" id="username" name="username" placeholder="用户名" />
+		<input type="password" id="password" name="password" placeholder="密码" />
+		<div class="control-group">
+			<div class="controls">
+				<a href="/registration/password_reset/">忘记密码?</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="/cabinet/register/" class="btn">注册</a>
+				<button type="submit" class="btn btn-primary pull-right">登录</button>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<a href="{{ weibo }}" class="btn btn-primary btn-block"><i class="icon-weibo"></i>&nbsp;&nbsp;用微博帐号登录</a>
+			</div>
+		</div>
+	</fieldset>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block content-news %}
+<img src="/static/img/the_news.png" alt="the news" />
+<ul class="unstyled">
+	{% for n in news %}
+	<li class="news-item">
+		<p>
+			<a href="/cabinet/user/{{ n.lead.id }}/" class="userinfo color6">{{ n.lead.get_nickname }}</a>{{ n.news|safe }}
+		</p>
+		<p class="pull-right">
+			{{ n.datetime|date:"c" }}
+		</p>
+		<div class="clearfix"></div>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}
+
+{% block content-center %}
+<div>
+	<div class="center-top"></div>
+	<div class="help">
+		<section>
+			<h4><i class="icon-info"></i> 关于私橱网</h4>
+			<p>私橱网是面向线下熟人之间的实体书籍借阅平台，特别适合同学、同事、同城好友等经常见面的人群。</p>
+		</section>
+		<section>
+			<h4><i class="icon-refresh"></i> 借阅流程</h4>
+			<p>1. 请只向你认识的人借阅书籍!</p>
+			<p>
+				2. 借阅之前，请事先通过其他方式联系书籍主人，否则对方可能无法及时处理您的借阅请求，或者您的借阅请求将会被拒绝。
+			</p>
+			<p>
+				3. 如果对方同意了您的借阅请求，您就可以与对方约定取书的时间与地点。
+			</p>
+			<p>
+				4. 同样的，归还书籍时，也需要和对方约定好还书的时间和地点。
+			</p>
+		</section>
+		<section>
+			<h4><i class="icon-android"></i> App 下载</h4>
+			<ul class="inline">
+				<li><img src="http://appimg1.3g.qq.com/android_new/329/790329/902090/5.jpg" width="200" /></li>
+				<li><img src="http://appimg1.3g.qq.com/android_new/329/790329/902090/4.jpg" width="200" /></li>
+				<li>
+					<div>
+						<p>扫描二维码</p>
+						<p>下载 Android 客户端</p>
+						<img src="http://android.myapp.com/qrcode/?url=http%3A%2F%2Fandroid.myapp.com%2Fandroid%2Fdown.jsp%3Ftype%3D2%26appid%3D790329%26pkgid%3D902090%26icfa%3D-1%26g_f%3D990935" />
+					</div>
+				</li>
+			</ul>
+		</section>
+		<section>
+			<h4><i class="icon-weibo"></i> 联系我们</h4>
+			<p>
+				新浪微博: <a href="http://weibo.com/u/2749010082" target="_blank">私橱网</a>
+			</p>
+		</section>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".menu-help")[0].id = "menu-selected";
+		$(".menu-help").click(function() {
+			return false;
+		});
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends "cabinet/sc_base.html" %}
+{% block header %}
+<meta property="wb:webmaster" content="22203f13d1d6ad0a" />
+<link rel="stylesheet" href="/static/css/index.css">
+<title>私橱网  - 和朋友分享您的宝贝</title>
+{% endblock %}
+{% block content-center %}
+{% if user.username %}
+<ul class="cabinet-tab">
+	<li class="ml50 cabinet-tab-selected">
+		所有书
+	</li>
+</ul><!-- cabinet-tab -->
+{% endif %}
+<!-- <ul class="book-class color10 f14 mt20">
+	<li class="fl ml16 class-latest">
+		最新的
+	</li>
+	<li class="fl ml16 class-favorite">
+		最受欢迎的
+	</li>
+	<li class="fl ml16 class-tag">
+		按分类
+	</li>
+</ul><!-- book-class -->
+<div id="top-nav" class="page-nav farial f12 page-nav-bottom-border pb20">
+	<div class="nav-left fl">
+		<a href="#" class="btn_1st_page">&lt;&lt;</a>
+		<p class="fl">
+			...
+		</p>
+		<a href="#" class="btn_prev_page">&lt;</a>
+		<a href="#" class="btn_page" id="page-selected">1</a>
+		<a href="#" class="btn_page">2</a>
+		<a href="#" class="btn_page">3</a>
+		<a href="#" class="btn_page">4</a>
+		<a href="#" class="btn_page">5</a>
+		<a href="#" class="btn_page">6</a>
+		<a href="#" class="btn_page">7</a>
+		<a href="#" class="btn_page">8</a>
+		<a href="#" class="btn_nxt_page">&gt;</a>
+		<p class="fl">
+			...
+		</p>
+		<a href="#" class="btn_last_page">&gt;&gt;</a>
+	</div>
+	<div class="nav-right fr color11">
+		page:
+		<input type="text" class="input_page" id="input_page_up" value="1" />
+		of {{ page_num }} <a href="#" class="go_page no_unl" id="go_page_up" >GO</a>
+	</div>
+	<div class="cb"></div>
+</div><!-- page-nav -->
+<div id="latest-book-page" class="book-page">
+	<div id="page-latest-1">
+		{% include "cabinet/_book_list.html" %}
+	</div><!-- page-latest-1 -->
+</div><!-- book-page -->
+<div class="cb"></div>
+<div id="bottom-nav" class="page-nav farial f12 page-nav-top-border pt20">
+	<div class="nav-left fl">
+		<a href="#" class="btn_1st_page">&lt;&lt;</a>
+		<p class="fl">
+			...
+		</p>
+		<a href="#" class="btn_prev_page">&lt;</a>
+		<a href="#" class="btn_page" id="page-selected">1</a>
+		<a href="#" class="btn_page">2</a>
+		<a href="#" class="btn_page">3</a>
+		<a href="#" class="btn_page">4</a>
+		<a href="#" class="btn_page">5</a>
+		<a href="#" class="btn_page">6</a>
+		<a href="#" class="btn_page">7</a>
+		<a href="#" class="btn_page">8</a>
+		<a href="#" class="btn_nxt_page">&gt;</a>
+		<p class="fl">
+			...
+		</p>
+		<a href="#" class="btn_last_page">&gt;&gt;</a>
+	</div>
+	<div class="nav-right fr color11">
+		page:
+		<input type="text" class="input_page" id="input_page_dw" value="1" />
+		of {{ page_num }} <a href="#" class="go_page no_unl" id="go_page_dw" >GO</a>
+	</div>
+	<div class="cb"></div>
+</div><!-- page-nav -->
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".menu-cabinet")[0].id = "menu-selected";
+		$(".menu-cabinet").click(function() {
+			return false;
+		});
+		$menus = $(".nav ul li a");
+		$l_b = $(".light, .baseboard");
+
+		$menus.mouseover(function() {
+			var idx = $menus.index(this);
+			var left = 432 + 100 * idx;
+			$l_b.css("left", left);
+			$l_b.show();
+		});
+		$menus.mouseout(function() {
+			var idx = $menus.index(this);
+			$l_b.hide();
+		});
+
+		cabinet.cur_page = 1;
+		cabinet.cur_type = "latest";
+		cabinet.page_num["latest"] = {{ page_num }};
+	});
+</script>
+{% endblock %}

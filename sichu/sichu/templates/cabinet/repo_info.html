@@ -1,0 +1,118 @@
+<div class="repo-info">
+	<h2>欢迎来到：{{ repo.name }} 公馆!</h2>
+	<div class="repo-tabs">
+		<ul>
+			<li>
+				<a href="#tabs-repo-info">公馆信息</a>
+			</li>
+			<li>
+				<a href="#tabs-repo-news">公馆动态</a>
+			</li>
+			<li>
+				<a href="#tabs-repo-books">公馆藏书</a>
+			</li>
+			<li>
+				<a href="#tabs-repo-members">公馆成员</a>
+			</li>
+		</ul>
+		<div id="tabs-repo-info">
+			<table class="ui-widget ui-widget-content ui-corner-all">
+				<tbody>
+					<tr>
+						<td rowspan="6" width="200"><img src="/static/img/repo.jpg" alt="repos"></td>
+						<th>馆名：</th>
+						<td>{{ repo.name }}</td>
+					</tr>
+					<tr>
+						<th>成员人数：</th>
+						<td>{{ repo.members.count }}</td>
+					</tr>
+					<tr>
+						<th>藏书量：</th>
+						<td>{{ repo.book_num }}</td>
+					</tr>
+					<tr>
+						<th>借出(人/次)：</th>
+						<td>{{ repo.total_loaned_times }}</td>
+					</tr>
+					<tr>
+						<th>借入(人/次)：</th>
+						<td>{{ repo.total_borrowed_times }}</td>
+					</tr>
+					<tr>
+						<th>说明：</th>
+						<td>{{ repo.description }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div><!-- tabs-repo-info -->
+		<div id="tabs-repo-news">
+			<table class="ui-widget ui-widget-content ui-corner-all page-table">
+				<thead class="ui-widget-header">
+					<tr>
+						<th>时间</th>
+						<th></th>
+						<th>人物</th>
+						<th>事件</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for n in repo.get_latest_news %}
+					<tr>
+						<td>{{ n.datetime|date:"c" }}</td>
+						<td width="40px">
+							<img width="40" height="40" alt="Avatar for {{ n.lead.username }}" src="{{ n.lead.get_avatar }}"> 
+						</td>
+						<td><a href="/cabinet/user/{{ n.lead.id }}/" class="userinfo">{{ n.lead.last_name }}{{ n.lead.first_name }}</a></td>
+						<td>{{ n.news|safe }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div><!-- tabs-repo-news -->
+		<div id="tabs-repo-books">
+			<table class="ui-widget ui-widget-content ui-corner-all page-table">
+				<thead>
+					<tr class="ui-widget-header">
+						<th class="col-cover">封面</th>
+						<th>书名</th>
+						<th class="col-status">状态</th>
+						<th class="col-ebook">电子版</th>
+						<th>备注</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for bo in repo.all_books %}
+					{% include "cabinet/_BO_item.html" %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div><!-- tabs-repo-books -->
+		<div id="tabs-repo-members">
+			<table class="ui-widget ui-widget-content ui-corner-all page-table">
+				<thead>
+					<tr class="ui-widget-header">
+						<th width="40"></th>
+						<th>成员姓名</th>
+						<th>藏书量</th>
+						<th>借出次数</th>
+						<th>借入次数</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for m in repo.members.all %}
+					<tr>
+						<td>
+							<img width="40" height="40" alt="Avatar for {{ m.username }}" src="{{ m.get_avatar }}">
+						</td>
+						<td><a href="/cabinet/user/{{ m.id }}/" class="userinfo">{{ m.full_name }}</a></td>
+						<td>{{ m.bookownership_set.count }}</td>
+						<td>{{ m.book_loaned.count }}</td>
+						<td>{{ m.bookborrowrecord_set.count }}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div><!-- repo-tabs -->
+</div><!-- repo-info -->

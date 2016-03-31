@@ -1,0 +1,12 @@
+<ul class="book-list unstyled">
+	{% for w in userwanted %}
+	<li class="book-item pull-left">
+		<a href="/cabinet/book/{{ w.book.id }}/"> <img alt="{{ w.book.title }}" src="{{ w.book.get_image_url }}" /> </a>
+		<div class="inline">
+			<p class="pull-left">
+				&nbsp;<i class="icon-heart"></i>&nbsp;{{ w.book.bookownership_set.count }}
+			</p>
+		</div>
+	</li>
+	{% endfor %}
+</ul>

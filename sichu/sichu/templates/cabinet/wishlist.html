@@ -1,0 +1,101 @@
+{% extends "cabinet/sc_base.html" %}
+{% block header %}
+<title>大家想借&nbsp;|&nbsp;私橱网  - 和朋友分享您的宝贝</title>
+<link rel="stylesheet" href="/static/css/wishlist.css">
+{% endblock %}
+{% block content-center %}
+<ul class="cabinet-tab">
+	<li class="ml50 cabinet-tab-selected">
+		大家想借的书
+	</li>
+</ul><!-- cabinet-tab -->
+<div id="top-nav" class="page-nav farial f12 page-nav-bottom-border pb20">
+	<div class="nav-left fl">
+		<a href="#" class="btn_1st_page">&lt;&lt;</a>
+		<p class="fl">
+			...
+		</p>
+		<a href="#" class="btn_prev_page">&lt;</a>
+		<a href="#" class="btn_page" id="page-selected">1</a>
+		<a href="#" class="btn_page">2</a>
+		<a href="#" class="btn_page">3</a>
+		<a href="#" class="btn_page">4</a>
+		<a href="#" class="btn_page">5</a>
+		<a href="#" class="btn_page">6</a>
+		<a href="#" class="btn_page">7</a>
+		<a href="#" class="btn_page">8</a>
+		<a href="#" class="btn_nxt_page">&gt;</a>
+		<p class="fl">
+			...
+		</p>
+		<a href="#" class="btn_last_page">&gt;&gt;</a>
+	</div>
+	<div class="nav-right fr color11">
+		page:
+		<input type="text" class="input_page" id="input_page_up" value="1" />
+		of {{ page_num }} <a href="#" class="go_page no_unl" id="go_page_up" >GO</a>
+	</div>
+	<div class="cb"></div>
+</div><!-- page-nav -->
+<div id="wish-book-page" class="book-page">
+	<div id="page-wish-1">
+		{% include "cabinet/_wishlist.html" %}
+	</div><!-- page-wish-1 -->
+</div><!-- book-page -->
+<div class="cb"></div>
+<div id="bottom-nav" class="page-nav farial f12 page-nav-top-border pt20">
+	<div class="nav-left fl">
+		<a href="#" class="btn_1st_page">&lt;&lt;</a>
+		<p class="fl">
+			...
+		</p>
+		<a href="#" class="btn_prev_page">&lt;</a>
+		<a href="#" class="btn_page" id="page-selected">1</a>
+		<a href="#" class="btn_page">2</a>
+		<a href="#" class="btn_page">3</a>
+		<a href="#" class="btn_page">4</a>
+		<a href="#" class="btn_page">5</a>
+		<a href="#" class="btn_page">6</a>
+		<a href="#" class="btn_page">7</a>
+		<a href="#" class="btn_page">8</a>
+		<a href="#" class="btn_nxt_page">&gt;</a>
+		<p class="fl">
+			...
+		</p>
+		<a href="#" class="btn_last_page">&gt;&gt;</a>
+	</div>
+	<div class="nav-right fr color11">
+		page:
+		<input type="text" class="input_page" id="input_page_dw" value="1" />
+		of {{ page_num }} <a href="#" class="go_page no_unl" id="go_page_dw" >GO</a>
+	</div>
+	<div class="cb"></div>
+</div><!-- page-nav -->
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".menu-want")[0].id = "menu-selected";
+		$(".menu-want").click(function() {
+			return false;
+		});		
+		
+		$(".btn_login").click(function() {
+			$(".form_login").submit();
+		});
+		
+		$(".btn_page").filter(function () {
+			 if ( $(this).text() > {{ page_num }} ) { 
+			 	return true;
+			 } else {
+			 	return false;
+			 } 
+		}).hide();
+
+		cabinet.cur_page = 1;
+		cabinet.cur_type = "wish";
+		cabinet.page_num["wish"] = {{ page_num }};
+	});
+</script>
+{% endblock %}

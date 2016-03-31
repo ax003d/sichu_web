@@ -1,0 +1,12 @@
+<div id="dlg_repo_apply" title="申请加入公馆" class="ui-dialog ui-widget ui-widget-content ui-corner-all">
+	<div style="height: 160px; min-height: 60px; width: auto;" class="ui-dialog-content ui-widget-content">
+		<form id="form_repo_apply" action="/cabinet/repo_apply/" method="post">
+			<p class="validate-tips" style="display: none;"></p>
+			{% csrf_token %}
+			<input type="hidden" name="repo_id" id="repo_id" />
+			<label for="remark">附言：</label>
+			<textarea name="remark" id="remark" class="text ui-widget-content ui-corner-all" />
+			<input type="submit" value="提交申请" />
+		</form>
+	</div>
+</div>

@@ -1,0 +1,25 @@
+<ul>
+	{% for wt in wanted_books %}
+	<li class="wantedBookItem ml50 mr50 mt20 pb20 {% if not forloop.last %}bb{% endif %}">
+		<div>
+			<div class="fl">
+				<a href="/cabinet/book/{{ wt.book.id }}/">
+					<img class="w120 h140" alt="{{ wt.book.title }}" src="{{ wt.book.get_image_url }}" />
+				</a>
+			</div>
+			<div class="fl ml16 lh200 f12">
+				<p class="f14">
+					<a href="/cabinet/book/{{ wt.book.id }}/" class="f14 color17 no_unl">《{{ wt.book.title }}》</a>
+				</p>
+				<p>
+					<span class="hightLight icon-favor">{{ wt.book.available_bookownership|length }}&nbsp;</span>人拥有
+				</p>
+				<p class="fl">
+					<a id="btn_del_want_{{ wt.id }}" class="btn_del_want ml0 mt65"></a>
+				</p>
+			</div>
+			<div class="cb"></div>
+		</div>
+	</li>
+	{% endfor %}
+</ul>

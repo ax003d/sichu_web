@@ -1,0 +1,30 @@
+<h2>我的公馆</h2>
+<table class="ui-widget ui-widget-content ui-corner-all">
+	<thead>
+		<tr class="ui-widget-header">
+			<th width="200"></th>
+			<th class="w80">馆名</th>
+			<th class="w80">管理员</th>
+			<th class="w80">成员人数</th>
+			<th class="w80">藏书量</th>
+			<th>说明</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for r in repos %}
+		<tr>
+			<td><img src="/static/img/repo.jpg" alt="repos"></td>
+			<td><a href="/cabinet/repo/{{ r.id }}/" class="repoinfo">{{ r.name }}</a></td>
+			<td>
+			{% for a in r.admin.all %} 
+			<a href="/cabinet/user/{{ a.id }}/" class="userinfo">{{ a.full_name }}</a>
+			{% endfor %} 
+			</td>
+			<td>{{ r.members.count }}</td>
+			<td>{{ r.book_num }}</td>
+			<td>{{ r.description }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<!-- <a href="#" class="button" onclick="cabinet.on_create_repo()">创建公馆</a> -->

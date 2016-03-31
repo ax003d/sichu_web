@@ -1,0 +1,32 @@
+{% extends "cabinet/sc_base.html" %}
+{% block header %}
+<title>{{ keyword }}&nbsp;|&nbsp;私橱网  - 和朋友分享您的宝贝</title>
+<link rel="stylesheet" href="/static/css/wishlist.css">
+{% endblock %}
+{% block content-center %}
+<ul class="cabinet-tab">
+	<li class="ml50 cabinet-tab-selected">
+		搜索结果:&nbsp;{{ keyword }}
+	</li>
+</ul><!-- cabinet-tab -->
+<div id="searched-book-page" class="book-page">
+	{% if books %}
+	<div id="searched-book-1">
+		{% include "cabinet/_searched_list.html" %}
+	</div><!-- searched-book-1 -->
+	{% else %}
+	<p class="mt20">对不起, 没有找到包含关键字为"{{ keyword }}"的相关书籍!</p>
+	{% endif %}
+</div><!-- book-page -->
+<div class="cb mb20"></div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	$(document).ready(function() {		
+		$(".btn_login").click(function() {
+			$(".form_login").submit();
+		});
+	});
+</script>
+{% endblock %}

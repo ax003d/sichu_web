@@ -1,0 +1,55 @@
+#dlgAddBook {
+	width: 516px;
+}
+#isbn {
+	border: none;
+	width: 355px;
+	height: 37px;
+	padding-left: 16px;
+	margin-left: 40px;
+	margin-top: 16px;
+	line-height: 18px;
+	font-size: 14px;
+	color: #FFFFFF;
+	background-image: url(/static/img/add_book_isbn.png);
+}
+.btn_nxt, .btn_finish {
+	display: block;
+	position: absolute;
+	bottom: 16px;
+	right: 16px;
+	width: 72px;
+	height: 36px;	
+}
+.btn_nxt {
+	background-image: url(/static/img/btn_nxt.png);
+}
+.btn_finish {
+	background-image: url(/static/img/btn_finish.png);
+}
+.btn_prev {
+	display: block;
+	position: absolute;
+	bottom: 16px;
+	right: 92px;
+	width: 40px;
+	height: 36px;
+	background-image: url(/static/img/btn_prev.png);
+}
+.radio-set {
+	margin-left: 40px;
+	margin-top: 16px;
+}
+#form_add_book textarea {	
+	outline: none;
+	resize: none;
+	border: none;
+	padding: 8px;
+	color: #FFFFFF;
+	width: 306px;
+	height: 66px;
+	margin-left: 40px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+	background-image: url(/static/img/remark-bg.png);
+}

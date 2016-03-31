@@ -1,0 +1,15 @@
+<img src="{{ book.get_image_url }}" alt="{{ book.title }}" class="w120 h140 mt16 ml40 mb30 fl">
+<div class="fl mt15 ml16">
+	<p class="f16">
+		{{ book.title }}
+	</p>
+	<p class="f12 color3">
+		ISBN: {{ book.isbn }}
+	</p>
+	<p class="f12 color3">
+		作者：{{ book.author }}
+	</p>
+	<p>
+		<a href="http://book.douban.com/subject/{{ book.douban_id }}/" class="f12 color6">豆瓣链接</a>
+	</p>
+</div>

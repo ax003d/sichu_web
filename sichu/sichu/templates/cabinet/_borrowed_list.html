@@ -1,0 +1,31 @@
+<ul>
+	{% for br in borrow_recs %}
+	<li class="borrowedBookItem ml50 mr50 mt20 pb20 {% if not forloop.last %}bb{% endif %}">
+		<div>
+			<div class="fl">
+				<a href="/cabinet/book/{{ br.ownership.book.id }}/">
+					<img class="w120 h140" alt="{{ br.ownership.book.title }}" src="{{ br.ownership.book.get_image_url }}" />
+				</a>
+			</div>
+			<div class="fl ml16 lh200 f12">
+				<p class="f14">
+					<a href="/cabinet/book/{{ br.ownership.book.id }}/" class="f14 color17 no_unl">《{{ br.ownership.book.title }}》</a>
+				</p>
+				<p>
+					拥有者：<span class="hightLight"><a href="/cabinet/user/{{ br.ownership.owner.id }}/" class="userinfo hightLight">{{ br.ownership.owner.get_nickname }}</a></span>
+				</p>
+				<p>
+					借阅时间：<span class="hightLight">{{ br.borrow_date|date:"c"}}</span>
+				</p>
+				<p>
+					预计归还日期：<span class="hightLight">{{ br.planed_return_date|date:"c" }}</span>
+				</p>
+				<p>
+					归还日期：<span class="hightLight">{% if br.returned_date %}{{ br.returned_date|date:"c" }}{% else %}未归还{% endif %}</span>
+				</p>
+			</div>
+			<div class="cb"></div>
+		</div>
+	</li>
+	{% endfor %}
+</ul>

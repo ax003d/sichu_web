@@ -1,0 +1,370 @@
+{% extends "cabinet/sc_base.html" %}
+{% block header %}
+<link rel="stylesheet" href="/static/css/mybookshelf.css">
+<title>{{ user.get_nickname }}的书橱&nbsp;|&nbsp;私橱网</title>
+{% endblock %}
+{% block content-center %}
+<div>
+	<ul class="cabinet-tab">
+		<li class="ml50 cabinet-tab-selected">
+			<a href="#myBooks" class="cabinetTabItem">我的书籍</a>
+		</li>
+		<li>
+			<a href="#loanedBooks" class="cabinetTabItem">借出的书</a>
+		</li>
+		<li>
+			<a href="#borrowedBooks" class="cabinetTabItem">借入的书</a>
+		</li>
+		<li>
+			<a href="#wantedBooks" class="cabinetTabItem">我的收藏</a>
+		</li>
+	</ul>
+	<div class="myBooks">
+		{% if my_books %}
+		<div id="mybooks-book-page">
+			<div id="page-mybooks-1">
+				{% include "cabinet/_mybook_list.html" %}
+			</div><!-- page-mybooks-1 -->
+		</div><!-- mybooks-book-page -->
+		<div id="mb-nav" class="page-nav farial f12 page-nav-top-border pt20">
+			<div class="nav-left fl">
+				<a href="#" class="btn_1st_page">&lt;&lt;</a>
+				<p class="fl">
+					...
+				</p>
+				<a href="#" class="btn_prev_page">&lt;</a>
+				<a href="#" class="btn_page" id="page-selected">1</a>
+				<a href="#" class="btn_page">2</a>
+				<a href="#" class="btn_page">3</a>
+				<a href="#" class="btn_page">4</a>
+				<a href="#" class="btn_page">5</a>
+				<a href="#" class="btn_page">6</a>
+				<a href="#" class="btn_page">7</a>
+				<a href="#" class="btn_page">8</a>
+				<a href="#" class="btn_nxt_page">&gt;</a>
+				<p class="fl">
+					...
+				</p>
+				<a href="#" class="btn_last_page">&gt;&gt;</a>
+			</div>
+			<div class="nav-right fr color11">
+				page:
+				<input type="text" class="input_page" id="input_page_dw" value="1" />
+				of {{ mb_page_num }} <a href="#" class="go_page no_unl" id="go_page_dw" >GO</a>
+			</div>
+			<div class="cb"></div>
+		</div><!-- page-nav -->
+		{% else %}
+		<p class="ml50 mt20">
+			您还没有添加书籍!
+		</p>
+		{% endif %}
+	</div><!-- myBooks -->
+	<div class="loanedBooks none">
+		{% if loaned_recs %}
+		<form id="form_return_book" method="post">
+			{% csrf_token %}
+			<p class="validate-tips" class="none" />
+			<input type="hidden" id="br_id" name="br_id" />
+		</form>
+		<div id="loaned-book-page">
+			<div id="page-loaned-1">
+				{% include "cabinet/_loaned_list.html" %}
+			</div><!-- page-loaned-1 -->
+		</div><!-- loaned-book-page -->
+		<div class="page-nav farial f12 page-nav-top-border pt20">
+			<div class="nav-left fl">
+				<a href="#" class="btn_1st_page">&lt;&lt;</a>
+				<p class="fl">
+					...
+				</p>
+				<a href="#" class="btn_prev_page">&lt;</a>
+				<a href="#" class="btn_page" id="page-selected">1</a>
+				<a href="#" class="btn_page">2</a>
+				<a href="#" class="btn_page">3</a>
+				<a href="#" class="btn_page">4</a>
+				<a href="#" class="btn_page">5</a>
+				<a href="#" class="btn_page">6</a>
+				<a href="#" class="btn_page">7</a>
+				<a href="#" class="btn_page">8</a>
+				<a href="#" class="btn_nxt_page">&gt;</a>
+				<p class="fl">
+					...
+				</p>
+				<a href="#" class="btn_last_page">&gt;&gt;</a>
+			</div>
+			<div class="nav-right fr color11">
+				page:
+				<input type="text" class="input_page" id="input_page_dw" value="1" />
+				of {{ lr_page_num }} <a href="#" class="go_page no_unl" id="go_page_dw" >GO</a>
+			</div>
+			<div class="cb"></div>
+		</div><!-- page-nav -->
+		{% else %}
+		<p class="ml50 mt20">
+			您没有借出的书籍!
+		</p>
+		{% endif %}
+	</div><!-- loanedBooks -->
+	<div class="borrowedBooks none">
+		{% if borrow_recs %}
+		<div id="borrowed-book-page">
+			<div id="page-borrowed-1">
+				{% include "cabinet/_borrowed_list.html" %}
+			</div><!-- page-borrowed-1 -->
+		</div><!-- borrowed-book-page -->
+		<div class="page-nav farial f12 page-nav-top-border pt20">
+			<div class="nav-left fl">
+				<a href="#" class="btn_1st_page">&lt;&lt;</a>
+				<p class="fl">
+					...
+				</p>
+				<a href="#" class="btn_prev_page">&lt;</a>
+				<a href="#" class="btn_page" id="page-selected">1</a>
+				<a href="#" class="btn_page">2</a>
+				<a href="#" class="btn_page">3</a>
+				<a href="#" class="btn_page">4</a>
+				<a href="#" class="btn_page">5</a>
+				<a href="#" class="btn_page">6</a>
+				<a href="#" class="btn_page">7</a>
+				<a href="#" class="btn_page">8</a>
+				<a href="#" class="btn_nxt_page">&gt;</a>
+				<p class="fl">
+					...
+				</p>
+				<a href="#" class="btn_last_page">&gt;&gt;</a>
+			</div>
+			<div class="nav-right fr color11">
+				page:
+				<input type="text" class="input_page" id="input_page_dw" value="1" />
+				of {{ br_page_num }} <a href="#" class="go_page no_unl" id="go_page_dw" >GO</a>
+			</div>
+			<div class="cb"></div>
+		</div><!-- page-nav -->
+		{% else %}
+		<p class="ml50 mt20">
+			您没有借阅书籍!
+		</p>
+		{% endif %}
+	</div><!-- borrowedBooks -->
+	<div class="wantedBooks none">
+		{% if wanted_books %}
+		<div id="wanted-book-page">
+			<div id="page-wanted-1">
+				{% include "cabinet/_wanted_list.html" %}
+			</div><!-- page-wanted-1 -->
+		</div><!-- wanted-book-page -->
+		<div class="page-nav farial f12 page-nav-top-border pt20">
+			<div class="nav-left fl">
+				<a href="#" class="btn_1st_page">&lt;&lt;</a>
+				<p class="fl">
+					...
+				</p>
+				<a href="#" class="btn_prev_page">&lt;</a>
+				<a href="#" class="btn_page" id="page-selected">1</a>
+				<a href="#" class="btn_page">2</a>
+				<a href="#" class="btn_page">3</a>
+				<a href="#" class="btn_page">4</a>
+				<a href="#" class="btn_page">5</a>
+				<a href="#" class="btn_page">6</a>
+				<a href="#" class="btn_page">7</a>
+				<a href="#" class="btn_page">8</a>
+				<a href="#" class="btn_nxt_page">&gt;</a>
+				<p class="fl">
+					...
+				</p>
+				<a href="#" class="btn_last_page">&gt;&gt;</a>
+			</div>
+			<div class="nav-right fr color11">
+				page:
+				<input type="text" class="input_page" id="input_page_dw" value="1" />
+				of {{ wl_page_num }} <a href="#" class="go_page no_unl" id="go_page_dw" >GO</a>
+			</div>
+			<div class="cb"></div>
+		</div><!-- page-nav -->
+		{% else %}
+		<p class="ml50 mt20">
+			您没有收藏任何书籍!
+		</p>
+		{% endif %}
+	</div><!-- wantedBooks -->
+	<a href="#" class="btn_add_book"></a>
+</div>
+{% endblock %}
+
+{% block other-content %}
+<div id="dlg_edit_bookownerinfo" class="dialog none">
+	<div class="dialog-title">
+		<p>
+			成功修改书籍信息
+		</p>
+		<a href="#"></a>
+	</div>
+	<div class="dialog-content">
+		<div class="ml40 tc">
+			<img src="/static/img/books.png" alt="books" class="fl" />
+			<p class="fl mt50">
+				<span class="color15 f21 fyh content">成功修改书籍信息!</span>
+			</p>
+			<div class="cb"></div>
+		</div>
+	</div>
+</div><!-- dlg_edit_bookownerinfo -->
+<form id="form_del_bookownership" action="/cabinet/del_bookownership/" method="post">
+	{% csrf_token %}
+	<input type="hidden" id="bookownership" name="bookownership" />
+</form><!-- form_del_bookownership -->
+<form id="form_return_book" action="/cabinet/return_book/" method="post">
+	{% csrf_token %}
+	<input type="hidden" id="br_id" name="br_id" />
+</form><!-- form_return_book -->
+<form id="form_del_bookwant" action="/cabinet/del_bookwant/" method="post">
+	{% csrf_token %}
+	<input type="hidden" id="wt_id" name="wt_id" />	
+</form><!-- form_del_bookwant -->
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	var form_edit_bookownership = function() {
+		$(this).submit(function(event) {
+			event.preventDefault();
+			var vals = $(this).serialize();
+			$.post("/cabinet/edit_bookownership/", vals, function(json) {
+				if(json['success'] == true) {
+					$("#dlg_edit_bookownerinfo .dialog-title > p").text("成功修改书籍信息");
+					$("#dlg_edit_bookownerinfo .content").text("成功修改书籍信息");										
+				} else {
+					$("#dlg_edit_bookownerinfo .dialog-title > p").text("修改书籍信息失败");
+					$("#dlg_edit_bookownerinfo .content").text("修改书籍信息失败");
+				}
+				cabinet.show_dialog($("#dlg_edit_bookownerinfo"));
+			});
+		});
+	};
+	// form_edit_bookownership
+	
+	var form_del_bookownership = function() {
+		$("#form_del_bookownership").submit(function(event) {
+			event.preventDefault();
+			var vals = $(this).serialize();
+			$.post("/cabinet/del_bookownership/", vals, function(json) {
+				if(json['success'] == true) {
+					$("#btn_del_" + json['id']).parent().parent().parent().parent().remove();
+				} else {
+					$("#dlg_edit_bookownerinfo .dialog-title > p").text("删除书籍信息失败");
+					$("#dlg_edit_bookownerinfo .content").text("删除书籍信息失败");
+					cabinet.show_dialog($("#dlg_edit_bookownerinfo"));
+				}
+			});
+		});
+	}; // form_del_bookownership
+
+	var form_return_book = function() {
+		$("#form_return_book").submit(function(event) {
+			event.preventDefault();
+			var vals = $(this).serialize();
+			$.post("/cabinet/return_book/", vals, function(json) {
+				if(json['success'] == true) {
+					// cabinet.show_loaned_books();
+					$("#btn_return_" + json['id']).parent().replaceWith('<p>归还日期：<span class="hightLight">' + json['date'] + '</span></p>');
+				} else {
+					$("#dlg_edit_bookownerinfo .dialog-title > p").text("归还书籍失败");
+					$("#dlg_edit_bookownerinfo .content").text("归还书籍失败");
+					cabinet.show_dialog($("#dlg_edit_bookownerinfo"));
+				}
+			});
+		});
+	};
+	// form_return_book
+	
+	var form_del_bookwant = function() {
+		$("#form_del_bookwant").submit(function(event) {
+			event.preventDefault();
+			var vals = $(this).serialize();
+			$.post("/cabinet/del_bookwant/", vals, function(json) {
+				if(json['success'] == true) {
+					$("#btn_del_want_" + json['id']).parents('li.wantedBookItem').remove();
+				} else {
+					$("#dlg_edit_bookownerinfo .dialog-title > p").text("删除收藏书籍失败");
+					$("#dlg_edit_bookownerinfo .content").text("删除收藏书籍信息失败");
+					cabinet.show_dialog($("#dlg_edit_bookownerinfo"));
+				}
+			});
+		});		
+	};
+	// form_del_bookwant
+
+	$(document).ready(function() {
+		$(".submenu")[2].id = "submenu-selected";
+		$(".submenu:eq(2)").click(function() {
+			return false;
+		});
+
+		cabinet.page_mybookshelf = {};
+
+		cabinet.cur_page = 1;
+		cabinet.cur_type = "mybooks";
+		cabinet.page_num["mybooks"] = {{ mb_page_num }};
+		cabinet.page_num["loaned"] = {{ lr_page_num }};
+		cabinet.page_num["borrowed"] = {{ br_page_num }};
+		cabinet.page_num["wanted"] = {{ wl_page_num }};
+
+		$(".myBooks:visible").livequery(function() {
+			cabinet.go_page(cabinet.cur_type, 1);
+			cabinet.cur_type = "mybooks";
+			cabinet.go_page(cabinet.cur_type, 1);
+		});
+		$(".loanedBooks:visible").livequery(function() {
+			cabinet.go_page(cabinet.cur_type, 1);
+			cabinet.cur_type = "loaned";
+			cabinet.go_page(cabinet.cur_type, 1);
+		});
+		$(".borrowedBooks:visible").livequery(function() {
+			cabinet.go_page(cabinet.cur_type, 1);
+			cabinet.cur_type = "borrowed";
+			cabinet.go_page(cabinet.cur_type, 1);
+		});
+		$(".wantedBooks:visible").livequery(function() {
+			cabinet.go_page(cabinet.cur_type, 1);
+			cabinet.cur_type = "wanted";
+			cabinet.go_page(cabinet.cur_type, 1);
+		});
+
+		$(".btn_add_book").click(function(event) {
+			event.preventDefault();
+			cabinet.show_dialog($("#dlgAddBook"));
+		});
+
+		$(".btn_save").livequery("click", function(event) {
+			var form_name = '#form_edit_bookownership_' + this.id.split('_')[2];
+			$(form_name).submit();
+		});
+		$(".btn_del").livequery("click", function(event) {
+			var id = this.id.split('_')[2];
+			var ret = confirm("您确定要删除书籍：" + $("#form_edit_bookownership_" + id + " p:first a").text() + "?");
+			if ( ret == false ) 
+				return;
+			$("#form_del_bookownership #bookownership").val(id); 
+			$("#form_del_bookownership").submit();
+		});
+		$(".form_edit_bookownership").livequery(form_edit_bookownership);
+		form_del_bookownership();
+		form_return_book();
+		$(".btn_return").livequery("click", function(event) {
+			var id = this.id.split('_')[2];
+			$("#form_return_book #br_id").val(id); 
+			$("#form_return_book").submit();
+		});
+		form_del_bookwant();
+		$(".btn_del_want").livequery("click", function(event) {
+			var id = this.id.split('_')[3];
+			var ret = confirm("您确定要删除收藏书籍：" + $("#btn_del_want_" + id).parents("div:first").children("p:first").children().text() + "?");
+			if ( ret == false ) 
+				return;
+			$("#form_del_bookwant #wt_id").val(id); 
+			$("#form_del_bookwant").submit();			
+		});
+	});
+</script>
+{% endblock %} 

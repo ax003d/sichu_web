@@ -1,0 +1,38 @@
+<li class="follow-item">
+	<div class="avatar w70 h70 fl">
+		<div class="inner-avatar">
+			<a href="/cabinet/user/{{ f.following.id }}/">
+				<img width="60" height="60" alt="Avatar for {{ f.following.username }}" src="{{ f.following.get_avatar }}">
+			</a>
+		</div>
+	</div>
+	<div class="fl ov_hide w535 ml10">
+		<p>
+			<a href="/cabinet/user/{{ f.following.id }}/" class="f14 color6">{{ f.following.get_nickname }} ({{ f.remark }})</a>
+		</p>
+		<p class="f12 color6 mt5">
+			藏书量: {{ f.following.book_num }} | 借出: {{ f.following.book_loaned|length }} | 借入: {{ f.following.bookborrowrecord_set.count }}
+		</p>
+		<h6 class="news-header">最新动态</h6>
+		{% if f.following.cabinetnews_set.count > 0 %}
+		<ul>
+			{% for n in f.following.cabinetnews_set.all|slice:":3" %}
+			<li class="{% if forloop.last %}news-item-last{% else %}news-item{% endif %}">
+				<p class="fl">
+					{{ n.news|safe }}
+				</p>
+				<p class="fr mr10">
+					{{ n.datetime|date:"c" }}
+				</p>
+				<div class="cr"></div>
+			</li>
+			{% endfor %}
+		</ul>
+		{% else %}
+		<p class="f12 color6 mt5">
+			无动态!
+		</p>
+		{% endif %}
+	</div>
+	<div class="cb"></div>
+</li>

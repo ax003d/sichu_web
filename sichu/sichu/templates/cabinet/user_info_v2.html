@@ -1,0 +1,347 @@
+{% extends "cabinet/bs_base.html" %}
+
+{% block header %}
+<title>{{ user.get_nickname }} &nbsp; | &nbsp; 私橱网  - 和朋友分享您的宝贝</title>
+{% endblock %}
+
+{% block content-profile %}
+<div class="pull-left">
+	<img width="60" height="60" alt="Avatar for {{ user.get_nickname }}" src="{{ user.get_avatar }}" class="img-polaroid">
+</div>
+<div class="username">
+	<p>
+		{{ user.get_nickname }} {% if follow %}<span>({{ follow.remark }})</span>{% endif %}
+	</p>
+</div>
+<div class="badges clearfix">
+	{% with user.get_weibo as weibo %}
+	{% if weibo %}
+	<a href="http://weibo.com/{{ weibo.uid }}" target="_blank" data-toggle="tooltip" title="{{ weibo.screen_name }}"><img src="/static/img/sina_32x32.png" /></a>
+	{% else %}
+	<img src="/static/img/sina_32x32_disabled.png" />
+	{% endif %}
+	{% endwith %}
+</div>
+<button class="btn btn-small btn_follow">
+	{% if follow %}
+	<i class="icon-star" data-id="{{ follow.id }}"></i> 取消关注
+	{% else %}
+	<i class="icon-star-empty"></i> 关注
+	{% endif %}
+</button>
+<table class="stats text-center">
+	<thead>
+		<tr>
+			<th class="br_dot">藏书量</th>
+			<th class="br_dot">借出</th>
+			<th>借入</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="br_dot">{{ user.book_num }}</td>
+			<td class="br_dot">{{ user.book_loaned|length }}</td>
+			<td>{{ user.bookborrowrecord_set.count }}</td>
+		</tr>
+	</tbody>
+</table>
+{% endblock %}
+
+{% block content-news %}
+<img src="/static/img/ta_news.png" alt="the news" />
+<ul class="unstyled">
+	{% for n in news %}
+	<li class="news-item">
+		<p>
+			<a href="/cabinet/user/{{ n.lead.id }}/" class="userinfo color6">{{ n.lead.get_nickname }}</a>{{ n.news|safe }}
+		</p>
+		<p class="pull-right">
+			{{ n.datetime|date:"c" }}
+		</p>
+		<div class="clearfix"></div>
+	</li>
+	{% endfor %}
+</ul>
+{% endblock %}
+
+{% block content-center %}
+<div class="tabbable">
+	<!-- Only required for left/right tabs -->
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#taBooks" data-toggle="tab">TA的书籍</a>
+		</li>
+		<li>
+			<a href="#taWantedBooks" data-toggle="tab">TA的收藏</a>
+		</li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="taBooks">
+			{% ifequal mb_page_num 0 %}
+			<p class="no-value">
+				TA 暂时没有书籍!
+			</p>
+			{% else %}
+			<div id="container">
+				<div class="pagination pagination-centered pagination-header">
+					<ul>
+						<li>
+							<a href="#" class="btn_1st_page">&lt;&lt;</a>
+						</li>
+						<li>
+							<a href="#" class="btn_prev_page">&lt;</a>
+						</li>
+						<li class="active">
+							<a href="#" class="btn_page">1</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">2</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">3</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">4</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">5</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">6</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">7</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">8</a>
+						</li>
+						<li>
+							<a href="#" class="btn_nxt_page">&gt;</a>
+						</li>
+						<li>
+							<a href="#" class="btn_last_page">&gt;&gt;</a>
+						</li>
+					</ul>
+				</div><!-- pagination -->
+				<div id="userbook_{{ user.id }}-book-page" class="book-page">
+					<div id="page-userbook_{{ user.id }}-1">
+						{% include "cabinet/_book_list_v2.html" %}
+					</div><!-- page-latest-1 -->
+				</div><!-- book-page -->
+				<div class="clearfix"></div>
+				<div class="pagination pagination-centered">
+					<ul>
+						<li>
+							<a href="#" class="btn_1st_page">&lt;&lt;</a>
+						</li>
+						<li>
+							<a href="#" class="btn_prev_page">&lt;</a>
+						</li>
+						<li class="active">
+							<a href="#" class="btn_page">1</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">2</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">3</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">4</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">5</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">6</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">7</a>
+						</li>
+						<li>
+							<a href="#"class="btn_page">8</a>
+						</li>
+						<li>
+							<a href="#" class="btn_nxt_page">&gt;</a>
+						</li>
+						<li>
+							<a href="#" class="btn_last_page">&gt;&gt;</a>
+						</li>
+					</ul>
+				</div><!-- pagination -->
+			</div>
+			{% endifequal %}
+		</div>
+		<div class="tab-pane" id="taWantedBooks">
+			{% ifequal wl_page_num 0 %}
+			<p class="no-value">
+				TA 暂时没有收藏书籍!
+			</p>
+			{% else %}
+			<div id="container">
+				<div class="pagination pagination-centered pagination-header">
+					<ul>
+						<li>
+							<a href="#" class="btn_1st_page">&lt;&lt;</a>
+						</li>
+						<li>
+							<a href="#" class="btn_prev_page">&lt;</a>
+						</li>
+						<li class="active">
+							<a href="#" class="btn_page">1</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">2</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">3</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">4</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">5</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">6</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">7</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">8</a>
+						</li>
+						<li>
+							<a href="#" class="btn_nxt_page">&gt;</a>
+						</li>
+						<li>
+							<a href="#" class="btn_last_page">&gt;&gt;</a>
+						</li>
+					</ul>
+				</div><!-- pagination -->
+				<div id="userwanted_{{ user.id }}-book-page" class="book-page">
+					<div id="page-userwanted_{{ user.id }}-1">
+						{% include "cabinet/_user_wanted_v2.html" %}
+					</div><!-- page-latest-1 -->
+				</div><!-- book-page -->
+				<div class="clearfix"></div>
+				<div class="pagination pagination-centered">
+					<ul>
+						<li>
+							<a href="#" class="btn_1st_page">&lt;&lt;</a>
+						</li>
+						<li>
+							<a href="#" class="btn_prev_page">&lt;</a>
+						</li>
+						<li class="active">
+							<a href="#" class="btn_page">1</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">2</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">3</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">4</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">5</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">6</a>
+						</li>
+						<li>
+							<a href="#" class="btn_page">7</a>
+						</li>
+						<li>
+							<a href="#"class="btn_page">8</a>
+						</li>
+						<li>
+							<a href="#" class="btn_nxt_page">&gt;</a>
+						</li>
+						<li>
+							<a href="#" class="btn_last_page">&gt;&gt;</a>
+						</li>
+					</ul>
+				</div><!-- pagination -->
+			</div>
+			{% endifequal %}
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+		var user_id = {{ user.id }};
+	{% if user.is_authenticated %}
+	var is_login = true;
+	{% else %}
+	var is_login = false;
+	{% endif %}
+
+	$(document).ready(function() {
+	cabinet.cur_page = 1;
+	cabinet.cur_type = "userbook_" + user_id;
+	cabinet.page_num["userbook_" + user_id] = {{ mb_page_num }};
+	cabinet.page_num["userwanted_" + user_id] = {{ wl_page_num }};
+
+	$(".btn_page").filter(function () {
+	if ( $(this).text() > {{ mb_page_num }} ) {
+	return true;
+	} else {
+	return false;
+	}
+	}).hide();
+
+	$("#taBooks:visible").livequery(function() {
+	cabinet.go_page(cabinet.cur_type, 1);
+	cabinet.cur_type = "userbook_" + user_id;
+	cabinet.go_page(cabinet.cur_type, 1);
+	});
+	$("#taWantedBooks:visible").livequery(function() {
+	cabinet.go_page(cabinet.cur_type, 1);
+	cabinet.cur_type = "userwanted_" + user_id;
+	cabinet.go_page(cabinet.cur_type, 1);
+	});
+
+	$(".btn_follow").click(function() {
+	if ( !is_login ) {
+	window.location = '/';
+	return;
+	}
+	
+	var is_follow = ($(this).text().trim() == '取消关注');
+	if (is_follow) {
+		var vals = {'id' : $(this).find('i').attr('data-id')};
+		$.post("/cabinet/following/del/", $.param(vals), function(json) {
+			if (json['success']) {
+				$(".btn_follow").html('<i class="icon-star-empty"></i> 关注');
+				$(".username p span").remove();
+			} else {
+				alert("取消关注失败！");
+			}
+		});
+		return;
+	}
+
+	var remark = prompt("输入备注名");
+	if ( remark == null ) {
+	return;
+	}
+
+	var vals = {};
+	vals['following'] = user_id;
+	vals['remark'] = remark;
+
+	$.post("/cabinet/following/", $.param(vals), function(json) {
+	if(json['success'] == true) {
+		$(".username p").append('<span>(' + remark + ')</span>');
+		$(".btn_follow").html('<i class="icon-star" data-id="' + json['id'] + '"></i> 取消关注');
+	} else {
+	alert("添加关注失败！");
+	}
+	});	});
+	});</script>
+{% endblock %}

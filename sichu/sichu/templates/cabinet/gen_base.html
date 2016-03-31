@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="/static/js/themes/sichu/jquery.ui.all.css">
+		<link rel="stylesheet" href="/static/css/base.css">
+		<link rel="stylesheet" href="/static/css/common.css">
+		<link rel="stylesheet" href="/static/css/_dlg_add_book.css">
+		{% block header %}
+		{% endblock %}
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-34005379-1']);
+			_gaq.push(['_trackPageview']); (function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+
+		</script>
+	</head>
+	<body class="big_bg">
+		<div class="header">
+			<div class="inner-header">
+				<div class="logo">
+					<a href="/cabinet/index/"><img src="/static/img/logo.png" alt="私橱网"></a>
+				</div><!-- logo -->
+				<div class="nav">
+					<ul>
+						<li>
+							<a href="/cabinet/index/" class="menu menu-cabinet"></a>
+						</li>
+						<li>
+							<a href="/cabinet/wishlist/" class="menu menu-want"></a>
+						</li>
+						<li>
+							<a href="/cabinet/help/" class="menu menu-help"></a>
+						</li>
+						<!-- 						<li>
+						<a href="#" class="menu menu-repo"></a>
+						</li> -->
+					</ul>
+				</div><!-- nav -->
+				<div class="search">
+					<form id="form_search" action="/cabinet/search/" method="get">
+						<input type="text" name="keyword" id="keyword" {% if keyword %}value="{{ keyword }}"{% else %}value="ISBN/书名/作者"  class="color3"{% endif %} />
+						<a href="#" id="btn_search" class="btn_search"></a>
+					</form>
+				</div>
+			</div><!-- inner-header -->
+		</div><!-- header -->
+		<div class="content">
+			<div class="content-center">
+				{% block content-center %}{% endblock %}
+			</div><!-- content-center -->
+			<div class="notify mb5">
+				<p>
+					私橱网书友 Q 群：419617471
+				</p>
+			</div>
+			<div class="profile pr">
+				{% block content-profile %}{% endblock %}
+			</div><!-- profile -->
+			<div class="news f12 color6 ln16">
+				{% block content-news %}{% endblock %}
+			</div><!-- news -->
+			<div class="active">
+				<img src="/static/img/active_friends.png" alt="the news" />
+				<ul>
+					{% for a in actives %}
+					<li class="fl mr4 w53 h72 ov_hide">
+						<div class="avatar w50 h50">
+							<div class="inner-avatar pt5">
+								<a href="/cabinet/user/{{ a.id }}/" target="_blank">
+									<img width="40" height="40" alt="Avatar for {{ a.get_nickname }}" src="{{ a.get_avatar }}">
+								</a>
+							</div>
+						</div>
+						<p class="tc w48 ov_hide">
+							<a href="/cabinet/user/{{ a.id }}/" class="userinfo f12 color6">{{ a.get_nickname }}</a>
+						</p>
+					</li>
+					{% endfor %}
+				</ul>
+			</div><!-- active -->
+			<div class="cb"></div>
+		</div><!-- content -->
+		<div class="footer">
+			<div class="inner-footer">
+				<p class="fl">
+					<span class="farial">&copy; 2012 ~ 2013 &nbsp; </span>
+					<span class="color18">私橱网</span>&nbsp;|
+					<span><a href="http://weibo.com/u/2749010082" target="_blank" class="color18 icon-weibo-enabled">私橱官方微博</a>&nbsp;|</span>
+					<span><a href="http://www.myapp.com/appdetail/a/790329?g_f=990935" target="_blank" class="color18">安卓客户端下载</a></span>
+				</p>
+<!-- 				<p class="fr">
+					会员：<span class="color18">{ { user_num } }</span>&nbsp;|&nbsp;藏书量：<span class="color18">{ { book_num } }</span>&nbsp;|&nbsp;借阅次数：<span class="color18">{ { borrow_num } }</span>
+				</p> -->
+			</div>
+		</div><!-- footer -->
+		<div id="overlay" class="none"></div>
+		{% include "cabinet/_dlg_add_book.html" %}
+		{% block other-content %}
+		{% endblock %} <script type="text/javascript" src="/static/js/jquery-1.7.1.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.ui.core.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.ui.widget.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.ui.mouse.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.ui.draggable.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.ui.position.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.ui.resizable.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.ui.button.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.livequery.js"></script>
+		<script type="text/javascript" src="/static/js/sichu.js"></script>
+		<script type="text/javascript" src="/static/js/_dlg_add_book.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var keyword_tips = "ISBN/书名/作者";
+				$("#keyword").focus(function() {
+					// console.debug("focus");
+					if($(this).val() == keyword_tips) {
+						$(this).attr("class", "color3");
+						$(this).val("");
+					} else {
+						$(this).attr("class", "");
+					}
+				}).blur(function() {
+					if($(this).val() == "") {
+						$(this).val(keyword_tips);
+						$(this).attr("class", "color3");
+					} else {
+						$(this).attr("class", "");
+					}
+				});
+				$(".dialog-title a").livequery('click', function(event) {
+					event.preventDefault();
+					$("#overlay").hide();
+					$(this).parent().parent().hide();
+				});
+				$("#btn_search").click(function() {
+					$("#form_search").submit();
+				});
+			});
+		</script>
+		{% block plus-script %}
+		{% endblock %}
+		{% block script %}
+		{% endblock %}
+	</body>
+</html>

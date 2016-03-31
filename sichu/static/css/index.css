@@ -1,0 +1,181 @@
+.book-class {
+	background-image: url(/static/img/book-class.png);
+	width: 590px;
+	height: 40px;
+	margin-left: 49px;
+}
+.class-latest, .class-favorite, .class-tag {	
+	background-repeat: no-repeat;
+	background-position: 0px 12px;
+	padding-left: 24px;
+	padding-top: 10px;
+}
+.class-latest {
+	background-image: url(/static/img/class-latest.png);
+}
+.class-favorite {
+	background-image: url(/static/img/class-favorite.png);
+}
+.class-tag {
+	background-image: url(/static/img/class-tag.png);
+}
+.book-page {
+	margin-left: 49px;
+}
+.book-item {
+	width: 120px;
+	height: 166px;
+	border: solid 1px #B9B9B9;
+	margin-top: 20px;
+	margin-right: 20px;
+	float: left;
+	padding: 5px;
+}
+.icon-favor, .icon-watch, .BI-favor, .BI-watch {
+	background-repeat: no-repeat;
+	background-position: 0px 4px;
+	padding-top: 4px;
+	padding-left: 20px;
+	margin-right: 20px;
+	font-size: 12px;
+}
+.BI-favor, .BI-watch {
+	float: left;
+}
+.BI-favor, .icon-favor {
+	background-image: url(/static/img/sfavor.png);
+}
+.BI-watch, .icon-watch {
+	background-image: url(/static/img/watch.png);
+}
+/*page-nav*/
+.page-nav-top-border {
+	border-top: solid 1px #B9B9B9;
+}
+.page-nav-bottom-border {
+	border-bottom: solid 1px #B9B9B9;
+}
+.page-nav {
+	position: relative;
+	width: 590px;
+	margin-top: 20px;
+	margin-left: 49px;
+}
+.nav-left a {
+	display: block;
+	float: left;
+	padding: 3px;
+	padding-left: 8px;
+	padding-right: 8px;
+	margin-right: 4px;
+	text-decoration: none;	
+	font-family: "Arial";
+	font-size: 12px;
+	background-image: url(/static/img/btn_page_normal.png);
+	background-repeat:repeat-x;
+	border: solid 1px #ACACAC;
+	color: #666666;
+}
+#page-selected, .nav-left a:active {
+	background-image: url(/static/img/btn_page.png);
+	background-repeat:repeat-x;
+	border: solid 1px #B8590C;
+	color: #FFFFFF;
+}
+.input_page {
+	width: 32px;
+	padding: 4px;
+	background: #F2F2F2;
+	border: solid 1px #ACACAC;
+	font-family: "Arial";
+	font-size: 12px;
+	color: #666666;
+}
+.go_page {	
+	width: 32px;
+	padding: 4px;
+	background: #F2F2F2;
+	border: solid 1px #ACACAC;
+	font-family: "Arial";
+	font-size: 12px;
+	color: #666666;
+}
+
+/*---------- bubble tooltip -----------*/
+a.tt{
+position:relative;
+z-index:24;
+text-decoration:none;
+}
+a.tt span{ display: none; }
+
+/*background:; ie hack, something must be changed in a for ie to execute it*/
+a.tt:hover{ z-index:25;}
+a.tt:hover span.tooltip{
+display:block;
+position:absolute;
+top:-149px; left:124px;
+padding: 15px 0 0 0;
+width:253px;
+filter: alpha(opacity:95);
+KHTMLOpacity: 0.95;
+MozOpacity: 0.95;
+opacity: 0.95;
+}
+a.tt:hover span.top{
+display: block;
+padding-top: 12px;
+padding-left: 20px;
+background: url(/static/img/tooltip.png) no-repeat top;
+}
+a.tt:hover span.top .icon-favor {
+	display: block;
+}
+a.tt:hover span.middle{ /* different middle bg for stretch */
+display: block;
+margin-top: -48px;
+padding: 0 20px;
+padding-top: 48px;
+background: url(/static/img/tooltip_filter.png) repeat bottom;
+}
+a.tt:hover span.bottom{
+display: block;
+padding:3px 8px 10px;
+color: #548912;
+background: url(/static/img/tooltip.png) no-repeat bottom;
+}
+a.tt:hover span.tt-title {
+	display: inline;
+	font-size: 14px;
+	font-weight: bold;
+	color: #333333;
+}
+a.tt:hover span.tt-status {
+	display: inline;
+	font-size: 12px;
+	color: #D47A51;
+}
+a.tt:hover span.tt-item {
+	display: inline;
+	font-size: 12px;
+	color: #999999;
+}
+a.tt:hover span.tt-owner {
+	display: inline;
+	font-size: 12px;
+	color: #D47A51;
+}
+a.tt:hover span.tt-favor, a.tt:hover span.tt-watch {
+	display: inline;
+	font-size: 12px;
+	color: #D47A51;	
+	background-repeat: no-repeat;
+	background-position: 0px -2px;
+	padding-left: 20px;
+}
+a.tt:hover span.tt-favor {
+	background-image: url(/static/img/sfavor.png);
+}
+a.tt:hover span.tt-watch {
+	background-image: url(/static/img/watch.png);
+}

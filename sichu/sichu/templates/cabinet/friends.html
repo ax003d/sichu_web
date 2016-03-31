@@ -1,0 +1,39 @@
+{% extends "cabinet/sc_base.html" %}
+{% block header %}
+<link rel="stylesheet" href="/static/css/friends.css">
+<title>{{ user.get_nickname }}的橱友&nbsp;|&nbsp;私橱网</title>
+{% endblock %}
+{% block content-center %}
+<div>
+	<ul class="cabinet-tab">
+		<li class="ml50 cabinet-tab-selected">
+			<a href="#following" class="cabinetTabItem">我的关注</a>
+		</li>
+		<li>
+			<a href="#follower" class="cabinetTabItem">我的粉丝</a>
+		</li>
+	</ul>
+	<div class="following">
+		{% if user.follow_set.all %}
+		<ul class="ml50 mr20 mt20">
+			{% for f in user.follow_set.all %}
+				{% include "cabinet/_follow_item.html" %}
+			{% endfor %}
+		</ul>
+		{% else %}
+		<p class="ml50 mt20">您还没有关注对象！</p>
+		{% endif %}		
+	</div>
+	<div class="follower none">
+		{% if user.follower_set.all %}
+		<ul class="ml50 mt20">
+			{% for f in user.follower_set.all %}
+				{% include "cabinet/_follower_item.html" %}
+			{% endfor %}
+		</ul>		
+		{% else %}
+		<p class="ml50 mt20">您还没有粉丝！</p>
+		{% endif %}		
+	</div>
+</div>
+{% endblock %}

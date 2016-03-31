@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+	<!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+
+		<link rel="stylesheet" href="/static/initializr/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+		<!--<link rel="stylesheet" href="/static/initializr/css/bootstrap-responsive.min.css">-->
+		<link rel="stylesheet" href="/static/css/bs_base.css">
+		{% block header %}{% endblock %}
+
+		<script src="/static/initializr/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+	</head>
+	<body>
+		<!--[if lt IE 7]>
+		<p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+		<![endif]-->
+
+		<div class="container">
+			<header class="header">
+				<div class="container inner-header">
+					<div class="nav-collapse collapse">
+						<a href="/" class="pull-left logo"><img src="/static/img/logo.png" alt="私橱网"></a>
+						<ul class="inline pull-left">
+							<li>
+								<a href="/cabinet/index/" class="menu menu-cabinet"></a>
+							</li>
+							<li>
+								<a href="/cabinet/wishlist/" class="menu menu-want"></a>
+							</li>
+							<li>
+								<a href="/cabinet/help/" class="menu menu-help"></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</header><!--header-->
+
+			<div id="content" class="container">
+				<div class="content-center pull-left">
+					{% block content-center %}{% endblock %}
+				</div><!-- content-center -->
+				<div class="profile pull-left">
+					{% block content-profile %}{% endblock %}
+				</div><!-- profile -->
+				<div class="news pull-left">
+					{% block content-news %}{% endblock %}
+				</div><!-- news -->
+				<div class="active-users pull-left">
+					<img src="/static/img/active_friends.png" alt="the news" />
+					<ul class="inline">
+						{% for a in actives %}
+						<li class="text-center pull-left">
+							<div>
+								<a href="/cabinet/user/{{ a.id }}/" target="_blank"> 
+									<img alt="Avatar for {{ a.get_nickname }}" src="{{ a.get_avatar }}" class="img-polaroid">
+								</a>
+							</div>
+							<p>
+								<a href="/cabinet/user/{{ a.id }}/">{{ a.get_nickname }}</a>
+							</p>
+						</li>
+						{% endfor %}
+					</ul>
+				</div><!-- active -->
+			</div>
+
+			<footer class="navbar">
+				<div class="navbar-inner" id="footer">
+					<div class="container">
+						<ul class="nav">
+							<li>
+								<a class="copyright">&copy; 2012 ~ 2013</a>
+							</li>
+							<li>
+								<a href="/">私橱网</a>
+							</li>
+							<li>
+								<a href="http://weibo.com/u/2749010082" target="_blank">私橱官方微博</a>
+							</li>
+							<li>
+								<a href="http://www.myapp.com/appdetail/a/790329?g_f=990935" target="_blank">安卓客户端下载</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</footer>
+		</div><!--container-->
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script>
+			window.jQuery || document.write('<script src="/static/initializr/js/vendor/jquery-1.8.2.min.js"><\/script>')
+		</script>
+		<script src="/static/initializr/js/vendor/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.livequery.js"></script>
+		<script type="text/javascript" src="/static/js/sichu_v2.js"></script>
+		<script src="/static/initializr/js/main.js"></script>
+		<script>
+			var _gaq = [['_setAccount', 'UA-34005379-1'], ['_trackPageview']];
+			( function(d, t) {
+					var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+					g.src = ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+					s.parentNode.insertBefore(g, s)
+				}(document, 'script'));
+		</script>
+		
+		{% block script %}
+		{% endblock %}
+	</body>
+</html>

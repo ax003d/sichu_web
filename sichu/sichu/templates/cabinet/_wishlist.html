@@ -1,0 +1,10 @@
+<ul class="book-list">
+	{% for w in wishlist %}
+	<li class="book-item">
+		<a href="/cabinet/book/{{ w.book.id }}/">
+			<img class="w120 h140" alt="{{ w.book.title }}" src="{{ w.book.get_image_url }}" />
+		</a>
+		<p class="color11 tc f12">{{ w.book.title }}</p>
+	</li>
+	{% endfor %}
+</ul>

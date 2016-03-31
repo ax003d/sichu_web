@@ -1,0 +1,281 @@
+{% extends "cabinet/gen_base.html" %}
+{% block header %}
+<link rel="stylesheet" href="/static/js/themes/sichu/jquery.ui.all.css">
+<link rel="stylesheet" href="/static/css/user_info.css">
+<title>{{ user.get_nickname }} &nbsp; | &nbsp; 私橱网  - 和朋友分享您的宝贝</title>
+{% endblock %}
+
+{% block content-profile %}
+<div class="avatar w70 h70 fl">
+	<div class="inner-avatar">
+		<img width="60" height="60" alt="Avatar for {{ user.get_nickname }}" src="{{ user.get_avatar }}">
+	</div>
+</div>
+<div class="fl ml8 desc">
+	<p class="fl4 color6 name">
+		{% if remark %}
+		{{ user.get_nickname }} ({{ remark }})
+		{% else %}
+		{{ user.get_nickname }}
+		{% endif %}
+	</p>
+	<p>
+		{% with user.get_weibo as weibo %}
+		{% if weibo %}
+		<a href="http://weibo.com/{{ weibo.uid }}" class="icon-weibo-enabled f12 color6 no_unl" target="_blank">{{ weibo.screen_name }}</a>
+		{% endif %}
+		{% endwith %}
+	</p>	
+	{% if not remark %}
+	<a href="javascript: void(0);" class="f12 no_unl color11 follow"> 加关注 </a>
+	{% endif %}
+</div>
+<div class="cl"></div>
+<table class="mt8">
+	<thead>
+		<tr class="color7">
+			<th class="w64 dot_border tc">藏书量</th>
+			<th class="w64 dot_border tc">借出</th>
+			<th class="w64 tc">借入</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="color8 f20 farial tc">
+			<td class="dot_border">{{ user.book_num }}</td>
+			<td class="dot_border">{{ user.book_loaned|length }}</td>
+			<td>{{ user.bookborrowrecord_set.count }}</td>
+		</tr>
+	</tbody>
+</table>
+{% endblock %}
+
+{% block content-news %} <img src="/static/img/ta_news.png" alt="the news" />
+<ul>
+	{% for n in news %}
+	<li class="news-item">
+		<p class="fl">
+			<a href="/cabinet/user/{{ n.lead.id }}/" class="userinfo color6">{{ n.lead.get_nickname }}</a>{{ n.news|safe }}
+		</p>
+		<p class="fr">
+			{{ n.datetime|date:"c" }}
+		</p>
+		<div class="cr"></div>
+	</li>
+	{% endfor %}
+</ul>
+<a href="#" class="mt8 fr">更多 >></a>
+{% endblock %}
+
+{% block content-center %}
+<ul class="cabinet-tab">
+	<li class="ml50 cabinet-tab-selected">
+		<a href="#taBooks" class="cabinetTabItem">TA的书籍</a>
+	</li>
+	<li>
+		<a href="#taWantedBooks" class="cabinetTabItem">TA的收藏</a>
+	</li>
+</ul>
+<div class="taBooks">
+	{% ifequal mb_page_num 0 %}
+	<p class="ml50 mt20">
+		TA 暂时没有书籍!
+	</p>
+	{% else %}
+	<div id="top-nav" class="page-nav farial f12 page-nav-bottom-border pb20">
+		<div class="nav-left fl">
+			<a href="#" class="btn_1st_page">&lt;&lt;</a>
+			<p class="fl">
+				...
+			</p>
+			<a href="#" class="btn_prev_page">&lt;</a>
+			<a href="#" class="btn_page" id="page-selected">1</a>
+			<a href="#" class="btn_page">2</a>
+			<a href="#" class="btn_page">3</a>
+			<a href="#" class="btn_page">4</a>
+			<a href="#" class="btn_page">5</a>
+			<a href="#" class="btn_page">6</a>
+			<a href="#" class="btn_page">7</a>
+			<a href="#" class="btn_page">8</a>
+			<a href="#" class="btn_nxt_page">&gt;</a>
+			<p class="fl">
+				...
+			</p>
+			<a href="#" class="btn_last_page">&gt;&gt;</a>
+		</div>
+		<div class="nav-right fr color11">
+			page:
+			<input type="text" class="input_page" id="input_page_up" value="1" />
+			of {{ mb_page_num }} <a href="#" class="go_page no_unl" id="go_page_up" >GO</a>
+		</div>
+		<div class="cb"></div>
+	</div><!-- page-nav -->
+	<div id="userbook_{{ user.id }}-book-page" class="book-page">
+		<div id="page-userbook_{{ user.id }}-1">
+			{% include "cabinet/_book_list.html" %}
+		</div><!-- page-latest-1 -->
+	</div><!-- book-page -->
+	<div class="cb"></div>
+	<div id="bottom-nav" class="page-nav farial f12 page-nav-top-border pt20">
+		<div class="nav-left fl">
+			<a href="#" class="btn_1st_page">&lt;&lt;</a>
+			<p class="fl">
+				...
+			</p>
+			<a href="#" class="btn_prev_page">&lt;</a>
+			<a href="#" class="btn_page" id="page-selected">1</a>
+			<a href="#" class="btn_page">2</a>
+			<a href="#" class="btn_page">3</a>
+			<a href="#" class="btn_page">4</a>
+			<a href="#" class="btn_page">5</a>
+			<a href="#" class="btn_page">6</a>
+			<a href="#" class="btn_page">7</a>
+			<a href="#" class="btn_page">8</a>
+			<a href="#" class="btn_nxt_page">&gt;</a>
+			<p class="fl">
+				...
+			</p>
+			<a href="#" class="btn_last_page">&gt;&gt;</a>
+		</div>
+		<div class="nav-right fr color11">
+			page:
+			<input type="text" class="input_page" id="input_page_dw" value="1" />
+			of {{ mb_page_num }} <a href="#" class="go_page no_unl" id="go_page_dw" >GO</a>
+		</div>
+		<div class="cb"></div>
+	</div><!-- page-nav -->
+	{% endifequal %}
+</div>
+<div class="taWantedBooks none">
+	{% ifequal wl_page_num 0 %}
+	<p class="ml50 mt20">
+		TA 暂时没有收藏书籍!
+	</p>
+	{% else %}
+	<div id="top-nav" class="page-nav farial f12 page-nav-bottom-border pb20">
+		<div class="nav-left fl">
+			<a href="#" class="btn_1st_page">&lt;&lt;</a>
+			<p class="fl">
+				...
+			</p>
+			<a href="#" class="btn_prev_page">&lt;</a>
+			<a href="#" class="btn_page" id="page-selected">1</a>
+			<a href="#" class="btn_page">2</a>
+			<a href="#" class="btn_page">3</a>
+			<a href="#" class="btn_page">4</a>
+			<a href="#" class="btn_page">5</a>
+			<a href="#" class="btn_page">6</a>
+			<a href="#" class="btn_page">7</a>
+			<a href="#" class="btn_page">8</a>
+			<a href="#" class="btn_nxt_page">&gt;</a>
+			<p class="fl">
+				...
+			</p>
+			<a href="#" class="btn_last_page">&gt;&gt;</a>
+		</div>
+		<div class="nav-right fr color11">
+			page:
+			<input type="text" class="input_page" id="input_page_up" value="1" />
+			of {{ wl_page_num }} <a href="#" class="go_page no_unl" id="go_page_up" >GO</a>
+		</div>
+		<div class="cb"></div>
+	</div><!-- page-nav -->
+	<div id="userwanted_{{ user.id }}-book-page" class="book-page">
+		<div id="page-userwanted_{{ user.id }}-1">
+			{% include "cabinet/_user_wanted.html" %}
+		</div><!-- page-latest-1 -->
+	</div><!-- book-page -->
+	<div class="cb"></div>
+	<div id="bottom-nav" class="page-nav farial f12 page-nav-top-border pt20">
+		<div class="nav-left fl">
+			<a href="#" class="btn_1st_page">&lt;&lt;</a>
+			<p class="fl">
+				...
+			</p>
+			<a href="#" class="btn_prev_page">&lt;</a>
+			<a href="#" class="btn_page" id="page-selected">1</a>
+			<a href="#" class="btn_page">2</a>
+			<a href="#" class="btn_page">3</a>
+			<a href="#" class="btn_page">4</a>
+			<a href="#" class="btn_page">5</a>
+			<a href="#" class="btn_page">6</a>
+			<a href="#" class="btn_page">7</a>
+			<a href="#" class="btn_page">8</a>
+			<a href="#" class="btn_nxt_page">&gt;</a>
+			<p class="fl">
+				...
+			</p>
+			<a href="#" class="btn_last_page">&gt;&gt;</a>
+		</div>
+		<div class="nav-right fr color11">
+			page:
+			<input type="text" class="input_page" id="input_page_dw" value="1" />
+			of {{ wl_page_num }} <a href="#" class="go_page no_unl" id="go_page_dw" >GO</a>
+		</div>
+		<div class="cb"></div>
+	</div><!-- page-nav -->
+	{% endifequal %}
+</div><!-- taWantedBooks -->
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+var user_id = {{ user.id }};
+{% if is_login %}
+var is_login = true;
+{% else %}
+var is_login = false;
+{% endif %} 
+
+
+$(document).ready(function() {
+	cabinet.cur_page = 1;
+	cabinet.cur_type = "userbook_" + user_id;
+	cabinet.page_num["userbook_" + user_id] = {{ mb_page_num }};
+	cabinet.page_num["userwanted_" + user_id] = {{ wl_page_num }};
+
+	$(".btn_page").filter(function () {
+		if ( $(this).text() > {{ mb_page_num }} ) {
+			return true;
+		} else {
+			return false;
+		}
+	}).hide();
+
+	$(".taBooks:visible").livequery(function() {
+		cabinet.go_page(cabinet.cur_type, 1);
+		cabinet.cur_type = "userbook_" + user_id;
+		cabinet.go_page(cabinet.cur_type, 1);
+	});
+	$(".taWantedBooks:visible").livequery(function() {
+		cabinet.go_page(cabinet.cur_type, 1);
+		cabinet.cur_type = "userwanted_" + user_id;
+		cabinet.go_page(cabinet.cur_type, 1);
+	});
+
+	$(".follow").click(function() {
+		if ( !is_login ) {
+			window.location = '/';
+			return;
+		}
+		
+		var remark = prompt("输入备注名");
+		if ( remark == null ) {
+			return;
+		}
+
+		var vals = {};
+		vals['following'] = user_id;
+		vals['remark'] = remark;
+		
+		$.post("/cabinet/following/", $.param(vals), function(json) {
+			if(json['success'] == true) {
+				var new_name = $(".name").text() + " (" + remark + ")";
+				$(".name").text(new_name);
+				$(".follow").hide();
+			} else {
+				alert("添加关注失败！");
+			}
+		});	});
+});	
+</script>
+{% endblock %} 

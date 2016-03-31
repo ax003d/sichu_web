@@ -1,0 +1,37 @@
+<ul class="book-list">
+	{% for bo in bookowns %}
+	<li class="book-item">
+		<a href="/cabinet/book/{{ bo.book.id }}/" class="tt" target="_blank"> <img class="w120 h140" alt="{{ bo.book.title }}" src="{{ bo.book.get_image_url }}" /> <span class="tooltip"> <span class="top">
+				<ul>
+					<li>
+						<span class="tt-title">{{ bo.book.title }}</span><span class="tt-status">({{ bo.get_status_display }})</span>
+					</li>
+					<li>
+						<span class="tt-item">拥有者：</span><span class="tt-owner">{{ bo.owner.get_nickname }}</span>
+					</li>
+					<li>
+						<span class="tt-item">电子版：</span><span class="tt-owner">{% if bo.has_ebook %}有{% else %}无{% endif %}</span>
+					</li>
+					<br/>
+					<li>
+						<span class="tt-item">备注：{% if bo.remark %}{{ bo.remark }}{% else %}无{% endif %}</span>
+					</li>
+					<br/>
+					<li>
+						<span class="tt-favor">{{ bo.book.bookownership_set.count }}</span>&nbsp;<span class="tt-item">个人拥有</span>
+					</li>
+					<li>
+						<span class="tt-watch">{{ bo.bookborrowrecord_set.count }}</span>&nbsp;<span class="tt-item">个人借过</span>
+					</li>
+				</ul></span><span class="middle"> </span> <span class="bottom"></span></span></a>
+		<ul class="farial f12 color10">
+			<li class="BI-favor">
+				{{ bo.book.bookownership_set.count }}
+			</li><!-- owner -->
+			<li class="BI-watch">
+				{{ bo.bookborrowrecord_set.count }}
+			</li><!-- borrow -->
+		</ul>
+	</li>
+	{% endfor %}
+</ul>

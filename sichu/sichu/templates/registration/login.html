@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta property="wb:webmaster" content="22203f13d1d6ad0a" />
+		<link rel="stylesheet" href="/static/css/base.css">
+		<link rel="stylesheet" href="/static/css/common.css">
+		<link rel="stylesheet" href="/static/css/login.css">
+		<title>私橱网 - 和朋友分享您的宝贝</title>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-34005379-1']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+
+		</script>
+	</head>
+	<body class="big_bg">
+		<div id="inner_body" class="w970 bc tc">
+			<div id="login" class="mt144 ml-90">
+				<h1 class="f55 fyh color1 tl inline ml-162">私橱网</h1>
+				<p class="f16 fyh color2 inline">
+					和朋友分享您的宝贝
+				</p>
+				<form class="cl form_login mt9" action="" method="post">
+					{% csrf_token %}
+					<fieldset>
+						<legend class="none">
+							登录表单
+						</legend>
+						<input type="text" id="username" name="username" />
+						<input type="password" id="password" name="password" />
+						<!-- <input type="image" src="/static/img/btn_login.jpg" alt="登录" class="pa ml9" /> -->
+						<a href="#" class="btn_login pa ml9 no_out_ln"></a>
+						<input type="submit" class="none" value="登录" />
+					</fieldset>
+				</form>
+				<a href="/registration/password_reset/" class="fl4 fst no_unl color4 block mt9 ml72 no_out_ln">忘记密码?</a>
+			</div><!-- login -->
+			<div id="random_books" class="mt108">
+				<a href="#" class="btn_prev fl prev ml90 mt50 no_out_ln"></a>
+				<a href="#" class="btn_prev none">上一页</a>
+				<ul class="block">
+					{% for b in books %}
+					{% if forloop.counter < 7 %}
+					<li class="fl ml13">
+						<a href="/cabinet/book/{{ b.id }}/"><img alt="{{ b.title }}" src="{{ b.get_image_url }}" class="cover" /></a>
+					</li>
+					{% else %}
+					<li class="fl ml13 none">
+						<a href="/cabinet/book/{{ b.id }}/"><img alt="{{ b.title }}" src="{{ b.get_image_url }}" class="cover" /></a>
+					</li>
+					{% endif %}
+					{% endfor %}
+				</ul>
+				<a href="#" class="btn_nxt fl ml20 nxt mt50 no_out_ln"></a>
+				<a href="#" class="none">下一页</a>
+				<div class="cb"></div>
+			</div><!-- random_books -->
+			<div class="mt72">
+				<p class="f14 fst color3 pb36">
+					&copy;2012私橱网
+				</p>
+			</div>
+			<a href="http://www.myapp.com/appdetail/a/790329?g_f=990935" target="_blank" class="btn_download no_out_ln"></a>
+			<a href="/cabinet/index/" class="btn_anony no_out_ln"></a>
+			<a href="/cabinet/index/" class="none">访客浏览</a>
+			<a href="{{ weibo }}" class="btn_weibo_login"></a>
+			<a href="/cabinet/register/" class="btn_reg no_out_ln"></a>
+			<a href="/cabinet/register/" class="none">注册</a>
+		</div><!-- inner_body -->
+		<script type="text/javascript" src="/static/js/jquery-1.7.1.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.effects.core.js"></script>
+		<script type="text/javascript" src="/static/js/ui/jquery.effects.blind.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(".btn_login").click(function() {
+					$(".form_login").submit();
+				});
+
+				window.onresize = function() {
+					var mt = $("body").height() - 581;
+					if (mt < 144) {
+						mt = 144;
+					}
+					$("#login").css("margin-top", mt + "px");
+				};
+				window.onresize();
+
+				cabinet = {};
+				cabinet.cur_idx = 0;
+				var on_btn_nxt = function(event) {
+					event.preventDefault();
+					if (cabinet.cur_idx == 12)
+						return;
+					$($("#random_books ul li")[cabinet.cur_idx]).hide("blind", {
+						"direction" : "horizontal"
+					}, 300);
+					$($("#random_books ul li")[cabinet.cur_idx + 6]).show("blind", {
+						"direction" : "horizontal"
+					}, 300);
+					cabinet.cur_idx += 1;
+				};
+				$(".btn_nxt").click(on_btn_nxt);
+				$(".btn_prev").click(function(event) {
+					event.preventDefault();
+					if (cabinet.cur_idx == 0)
+						return;
+					cabinet.cur_idx -= 1;
+					$($("#random_books ul li")[cabinet.cur_idx + 6]).hide("blind", {
+						"direction" : "horizontal"
+					}, 300);
+					$($("#random_books ul li")[cabinet.cur_idx]).show("blind", {
+						"direction" : "horizontal"
+					}, 300);
+				});
+				window.setInterval(function() {
+					$(".btn_nxt").click();
+				}, 3000);
+			});
+		</script>
+	</body>
+</html>

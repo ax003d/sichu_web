@@ -1,0 +1,191 @@
+{% extends "cabinet/sc_base.html" %}
+{% block header %}
+<link rel="stylesheet" href="/static/css/personal_info.css">
+<title>{{ user.get_nickname }}的个人资料&nbsp;|&nbsp;私橱网</title>
+{% endblock %}
+{% block content-center %}
+<div>
+	<ul class="cabinet-tab">
+		<li class="ml50 cabinet-tab-selected">
+			<a href="#personalInfo" class="cabinetTabItem">基本资料</a>
+		</li>
+		<li>
+			<a href="#chgPassword" class="cabinetTabItem">修改密码</a>
+		</li>
+	</ul>
+	<div class="personalInfo">
+		<form id="form_chg_personal_info" method="post">
+			{% csrf_token %}
+			<fieldset>
+				<table class="ml50 mt50 tblChgPersonalInfo">
+					<tbody class="f12">
+						<tr>
+							<td class="tr">账号：</td>
+							<td>{{ user.username }}</td>
+						</tr>
+						<tr>
+							<td class="tr"><label for="last_name">* 姓：</label></td>
+							<td>
+							<input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" class="text" />
+							</td>
+							<td id="last_name_err" class="none f14 color12">请输入姓氏!(1~6  个字符)</td>
+						</tr>
+						<tr>
+							<td class="tr"><label for="first_name">* 名：</label></td>
+							<td>
+							<input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" class="text"/>
+							</td>
+							<td id="first_name_err" class="none f14 color12">请输入名字!(1~6 个字符)</td>
+						</tr>
+						<tr>
+							<td class="tr"><label for="email">* 电子邮件：</label></td>
+							<td>
+							<input type="text" name="email" id="email" value="{{ user.email }}" class="text"/>
+							</td>
+							<td id="email_fmt_err" class="none f14 color12">请输入正确的 email地址!</td>
+							<td id="email_reg_err" class="none f14 color12">该电子邮件已经被注册!</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+							<input type="image" src="/static/img/btn_save.png" alt="保存" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
+		</form><!-- form_chg_personal_info -->
+	</div><!-- basic-info -->
+	<div class="chgPassword none">
+		<form id="form_chg_pwd" action="cabinet/chg_pwd/" method="post">
+			{% csrf_token %}
+			<fieldset>
+				<table class="ml50 mt50 tblChgPwd">
+					<tbody class="f12">
+						{% if user.has_usable_password %}
+						<tr>
+							<td class="tr"><label for="old_pwd">旧密码：</label></td>
+							<td>
+							<input type="password" name="old_pwd" id="old_pwd" class="text" />
+							</td>
+							<td id="pwd_err" class="none f14 color12">旧密码错误!</td>
+						</tr>
+						{% endif %}
+						<tr>
+							<td class="tr"><label for="password1">新密码：</label></td>
+							<td>
+							<input type="password" name="password1" id="password1" class="text" />
+							</td>
+							<td id="pwd_len_err" class="none f14 color12">密码应为 6~12 个字符!</td>							
+						</tr>
+						<tr>
+							<td class="tr"><label for="password2">再次输入新密码：</label></td>
+							<td>
+							<input type="password" name="password2" id="password2" class="text" />
+							</td>
+							<td id="pwd_not_same" class="none f14 color12">两次输入的密码不一致!</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+							<input type="image" src="/static/img/btn_save.png" alt="保存" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+		</form>
+	</div><!-- chgPassword -->
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	var form_chg_personal_info = function() {
+		$("#form_chg_personal_info").submit(function(event) {
+			event.preventDefault();
+
+			var $last_name = $("#form_chg_personal_info #last_name");
+			var $first_name = $("#form_chg_personal_info #first_name");
+			var $email = $("#form_chg_personal_info #email");
+
+			$("#last_name_err").hide();
+			$("#first_name_err").hide();
+			$("#email_fmt_err").hide();
+			$("#email_reg_err").hide();
+			
+
+			if(!cabinet.check_length($last_name, 1, 6)) {
+				$("#last_name_err").show();
+				return;
+			}
+			if(!cabinet.check_length($first_name, 1, 6)) {
+				$("#first_name_err").show();
+				return;
+			}
+			if(!cabinet.check_email($email)) {
+				$("#email_fmt_err").show();
+				return;
+			}
+
+			var vals = $(this).serialize();
+			$.post("/cabinet/chg_personal_info/", vals, function(json) {
+				if(json['email_used'] == true) {
+					$("#email_reg_err").show();
+				} else if(json['success'] == true) {
+					alert("成功保存个人信息");
+					window.location.reload();
+				}
+			});
+		});
+	};
+	// form_chg_personal_info
+
+	var form_chg_pwd = function() {
+		$("#form_chg_pwd").submit(function(event) {
+			event.preventDefault();
+
+			var $tips = $("#tabs-chg-pwd .validate-tips");
+			var $password1 = $("#form_chg_pwd #password1");
+			var $password2 = $("#form_chg_pwd #password2");
+			
+			$("#pwd_len_err").hide();
+			$("#pwd_not_same").hide();
+			$("#pwd_err").hide();
+
+			if(!cabinet.check_length($password1, 6, 12)) {
+				$("#pwd_len_err").show();
+				return;
+			}
+			if($password1.val() != $password2.val()) {
+				$("#pwd_not_same").show();
+				return;
+			}
+			var vals = $(this).serialize();
+			$.post("/cabinet/chg_pwd/", vals, function(json) {
+				if(json['success'] == true) {
+					$("#form_chg_pwd #old_pwd").val("");
+					$password1.val("");
+					$password2.val("");					
+					alert("密码修改成功!");
+				} else if(json['old_pwd_err']) {
+					$("#pwd_err").show();
+				} else if(json['new_pwd_err']) {
+					$("#pwd_not_same").show();
+				}
+			});
+		});
+	};
+	// form_chg_pwd
+
+	$(document).ready(function() {
+		$(".submenu")[1].id = "submenu-selected";
+		$(".submenu:eq(1)").click(function() {
+			return false;
+		});
+		
+		form_chg_personal_info();
+		form_chg_pwd();
+	});
+
+</script>
+{% endblock %} 

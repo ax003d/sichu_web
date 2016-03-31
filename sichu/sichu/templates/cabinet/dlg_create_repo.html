@@ -1,0 +1,16 @@
+<div id="dlg_create_repo" title="创建公馆" class="ui-dialog ui-widget ui-widget-content ui-corner-all">
+	<div style="height: 260px; min-height: 60px; width: auto;" class="ui-dialog-content ui-widget-content">		
+		<form id="form_create_repo" action="/cabinet/create_repo/" method="post">
+			<p class="validate-tips" style="display: none;"></p>
+			{% csrf_token %}
+			<fieldset>
+				<label for="name">馆名：</label>
+				<input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+				<label for="description">简介：</label>
+				<textarea name="description" id="description" class="text ui-widget-content ui-corner-all"/>
+				<!-- <input type="text" name="description" id="description" class="text ui-widget-content ui-corner-all" /> -->
+				<input type="submit" value="确定"/>
+			</fieldset>
+		</form><!-- form_create_repo -->
+	</div>
+</div><!-- dlg_create_repo -->

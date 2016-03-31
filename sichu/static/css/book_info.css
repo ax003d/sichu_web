@@ -1,0 +1,70 @@
+.bookinfo {
+	margin-top: 10px;
+	padding-top: 15px;
+	border-top: solid 1px #DDDDDD;
+}
+.bookowns {
+	padding: 10px;
+	border: solid 1px #DDDDDD;
+	background-image: url(/static/img/tbl_bg.gif);
+}
+.tblBookOwns thead {
+	background-image: url(/static/img/th_bg.png);
+}
+.tblBookOwns thead tr th {
+	padding: 8px;
+}
+.btnBorrow, .btnEbookReq {
+	display: block;
+	width: 54px;
+	height: 28px;
+}
+.btnBorrow {
+	background: url(/static/img/btn_borrow.png);
+}
+.btnEbookReq {
+	background: url(/static/img/btn_ebreq.png);
+}
+.btnBorrow:hover, .btnEbookReq:hover {
+	background-position: 0px -28px;
+}
+.btnBorrow:active, .btnEbookReq:active {
+	background-position: 0px -56px;
+}
+#btnWant {
+	display: block;
+	width: 52px;
+	height: 26px;
+	background: url(/static/img/btn_want.png);
+}
+#btnWant:hover {
+	background-position: 0px -26px;
+}
+#btnWant:active {
+	background-position: 0px -52px;
+}
+#dlg_borrow_request {
+	width: 516px;
+}
+#planed_return_date {
+	border: none;
+	width: 106px;
+	height: 30px;
+	margin-top: 5px;
+	line-height: 16px;
+	padding-left: 16px;
+	font-family: "Arial";
+	font-size: 12px;
+	color: #FFFFFF;	
+	background-image: url(/static/img/returndate_bg.png);
+}
+#remark {
+	width: 335px;
+	height: 66px;
+	font-size: 12px;
+	padding: 8px;
+	margin-top: 6px;
+	border: solid 1px #CCCCCC;
+	color: #FFFFFF;	
+	background-image: url(/static/img/borrowrequest_remark_bg.png);
+}

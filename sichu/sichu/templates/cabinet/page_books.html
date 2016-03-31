@@ -1,0 +1,37 @@
+<div id="page-{{ type }}-{{ page }}">
+	{% if bookowns %}
+	{% ifequal ver 1 %}
+	{% include "cabinet/_book_list.html" %}
+	{% else %}
+	{% include "cabinet/_book_list_v2.html" %}
+	{% endifequal %}
+	{% endif %}
+	
+	{% if userwanted %}
+	{% ifequal ver 1 %}
+	{% include "cabinet/_user_wanted.html" %}
+	{% else %}
+	{% include "cabinet/_user_wanted_v2.html" %}
+	{% endifequal %}
+	{% endif %}
+	
+	{% if my_books %}
+	{% include "cabinet/_mybook_list.html" %}
+	{% endif %}
+	
+	{% if loaned_recs %}
+	{% include "cabinet/_loaned_list.html" %}
+	{% endif %}
+	
+	{% if borrow_recs %}
+	{% include "cabinet/_borrowed_list.html" %}
+	{% endif %}
+	
+	{% if wanted_books %}
+	{% include "cabinet/_wanted_list.html" %}
+	{% endif %}
+	
+	{% if wishlist %}
+	{% include "cabinet/_wishlist.html" %}
+	{% endif %}
+</div><!-- page-n -->

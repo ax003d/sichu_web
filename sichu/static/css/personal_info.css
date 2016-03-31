@@ -1,0 +1,9 @@
+input.text {
+	border: solid 1px #D7D7D7;
+	padding: 4px;
+	width: 400px;
+	height: 24px;
+}
+.tblChgPersonalInfo td, .tblChgPwd td {
+	padding: 8px;
+} 

@@ -1,0 +1,10 @@
+<ul class="book-list">
+	{% for b in books %}
+	<li class="book-item">
+		<a href="/cabinet/book/{{ b.id }}/">
+			<img class="w120 h140" alt="{{ b.title }}" src="{{ b.get_image_url }}" />
+		</a>
+		<p class="color11 tc f12">{{ b.title }}</p>
+	</li>
+	{% endfor %}
+</ul>

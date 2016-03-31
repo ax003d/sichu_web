@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="/static/css/base.css">
+		<link rel="stylesheet" href="/static/css/common.css">
+		<link rel="stylesheet" href="/static/css/register.css">		
+		<title>{% block title %}{% endblock %}</title>
+	</head>
+	<body class="big_bg h">
+		<div id="inner_body" class="w600 bc">
+			<h1>私橱网</h1>
+			<div class="cb"></div>
+			<span class="tooltip-like"> <span class="top"> </span> <span class="middle"> 
+				{% block middle %}{% endblock %} </span> <span class="bottom"></span> </span>
+			<p class="tc mt20 color3 f13 farial">
+				&copy;2012 ~ 2013 &nbsp;私橱网
+			</p>
+		</div><!-- inner_body -->
+		<script type="text/javascript" src="/static/js/jquery-1.7.1.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				window.onresize = function() {
+					var mt = $("body").height() - 360;
+					if(mt < 36) {
+						mt = 36;
+					}
+					$("#inner_body").css("margin-top", mt + "px");
+				};
+				window.onresize();
+			});
+
+		</script>
+	</body>
+</html>

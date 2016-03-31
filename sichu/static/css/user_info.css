@@ -1,0 +1,34 @@
+.book-page {
+	margin-left: 49px;
+}
+.book-item {
+	width: 120px;
+	height: 166px;
+	border: solid 1px #B9B9B9;
+	margin-top: 20px;
+	margin-right: 20px;
+	float: left;
+	padding: 5px;
+}
+.icon-favor, .icon-watch, .BI-favor, .BI-watch {
+	background-repeat: no-repeat;
+	background-position: 0px 4px;
+	padding-top: 4px;
+	padding-left: 20px;
+	margin-right: 20px;
+	font-size: 12px;
+}
+.BI-favor, .BI-watch {
+	float: left;
+}
+.BI-favor, .icon-favor {
+	background-image: url(/static/img/sfavor.png);
+}
+.BI-watch, .icon-watch {
+	background-image: url(/static/img/watch.png);
+}
+.follow {
+	background-image: url(/static/img/follow.png);
+	background-repeat: no-repeat;
+	padding-left: 16px;
+}

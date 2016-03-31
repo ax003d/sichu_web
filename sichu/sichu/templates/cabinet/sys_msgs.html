@@ -1,0 +1,235 @@
+{% extends "cabinet/sc_base.html" %}
+{% block header %}
+<link rel="stylesheet" href="/static/css/sys_msgs.css">
+<title>{{ user.get_nickname }}的系统消息&nbsp;|&nbsp;私橱网</title>
+{% endblock %}
+{% block content-center %}
+<div>
+	<ul class="cabinet-tab">
+		<li class="ml50 cabinet-tab-selected">
+			<a href="#bookBorrowRequest" class="cabinetTabItem">书籍借阅请求</a>
+		</li>
+		<li>
+			<a href="#ebookRequest" class="cabinetTabItem">电子书请求</a>
+		</li>
+<!-- 		<li>
+			<a href="#joinRepoRequest" class="cabinetTabItem">加入公馆请求</a>
+		</li> -->
+	</ul>
+	<div class="bookBorrowRequest">
+		{% if borrow_requests %}
+		<form id="form_borrow_accept" action="/cabinet/borrow_accept/" method="post">
+			{% csrf_token %}
+			<input type="hidden" id="brid" name="brid" />
+			<input type="hidden" id="accepted" name="accepted" />
+		</form>
+		<ul>
+			{% for bq in borrow_requests %}
+			<li class="sysMsgItem ml50 mr50 mt20 pb20 {% if not forloop.last %}bb{% endif %}">
+				<div>
+					<div class="fl mt10">
+						<img width="50" height="50" alt="Avatar for {{ bq.requester.username }}" src="{{ bq.requester.get_avatar }}">
+					</div>
+					<div class="fl ml16 lh200 f12">
+						<p class="color11">
+							{{ bq.datetime|date:"c" }} <span class="color19 f16"> ({{ bq.get_status_display }})</span>
+						</p>
+						<p class="f14">
+							<a href="/cabinet/user/{{ bq.requester.id }}/" class="userinfo">{{ bq.requester.get_nickname }}</a>向您请求借阅书籍<a href="/cabinet/bookownership/{{ bq.bo_ship.id }}/" class="bookownershipinfo">《{{ bq.bo_ship.book.title }}》</a>!
+						</p>
+						<p>
+							预计归还日期：<span class="hightLight">{{ bq.planed_return_date|date:"c" }}</span>
+						</p>
+						<p class="fl">
+							留言：
+						</p>
+						<textarea class="remark fl" readonly="readonly">{{ bq.remark }}</textarea>
+						{% ifequal bq.status 0 %}
+						<p class="cb fr">
+							<a href="{{ bq.id }}" class="btn_reject"></a>
+							<a href="{{ bq.id }}" class="btn_agree"></a>
+						</p>
+						{% else %}
+						<div class="cb"></div>
+						{% endifequal %}
+					</div>
+					<div class="cb"></div>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+		{% else %}
+		<p class="ml50 mt20">当前没有书籍借阅请求!</p>
+		{% endif %}
+	</div><!-- bookBorrowRequest -->
+	<div class="ebookRequest none">
+		{% if ebook_requests %}
+		<form id="form_del_ebook_request" action="/cabinet/del_ebook_request/" method="post">
+			{% csrf_token %}
+			<input type="hidden" id="eqid" name="eqid" />
+		</form>
+		<ul>
+			{% for eq in ebook_requests %}
+			<li class="sysMsgItem ml50 mr50 mt20 pb20 {% if not forloop.last %}bb{% endif %}">
+				<div>
+					<div class="fl mt10">
+						<img width="50" height="50" alt="Avatar for {{ eq.requester.username }}" src="{{ eq.requester.get_avatar }}">
+					</div>
+					<div class="fl ml16 lh200 f12">
+						<p class="color11">
+							{{ bq.datetime|date:"c" }}
+						</p>
+						<p class="f14">
+							<a href="/cabinet/user/{{ eq.requester.id }}/" class="userinfo">{{ eq.requester.get_nickname }}</a>向您请求<a href="/cabinet/bookownership/{{ eq.bo_ship.id }}/" class="bookownershipinfo">《{{ eq.bo_ship.book.title }}》</a>的电子版!
+						</p>
+						<p class="fl">
+							<a href="{{ eq.id }}" class="btn_del_ebook_rqst"></a>
+						</p>
+					</div>
+					<div class="cb"></div>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+		{% else %}
+		<p class="ml50 mt20">当前没有电子书请求!</p>
+		{% endif %}
+	</div><!-- ebookRequest -->
+	<div class="joinRepoRequest none">
+		{% if join_repo_requests %}
+		<form id="form_join_repo_process" action="/cabinet/join_repo_process/" method="post">
+			{% csrf_token %}
+			<input type="hidden" id="jr_id" name="jr_id" />
+			<input type="hidden" id="accepted" name="accepted" />
+		</form>
+		<ul>
+			{% for q in join_repo_requests %}
+			<li class="sysMsgItem ml50 mr50 mt20 pb20 {% if not forloop.last %}bb{% endif %}">
+				<div>
+					<div class="fl mt10">
+						<img width="50" height="50" alt="Avatar for {{ q.requester.username }}" src="{{ q.requester.get_avatar }}">
+					</div>
+					<div class="fl ml16 lh200 f12">
+						<p class="color11">
+							{{ q.datetime|date:"c" }}
+						</p>
+						<p class="f14">
+							<a href="/cabinet/user/{{ q.requester.id }}/" class="userinfo">{{ q.requester.get_nickname }}</a>请求加入<a>{{ q.repo.name }}</a>公馆!
+						</p>
+						<p class="fl">
+							留言：
+						</p>
+						<textarea class="remark fl" readonly="readonly">{{ q.remark }}</textarea>
+						<p class="cb fr">
+							<a href="{{ q.id }}" class="btn_del_join"></a>
+							<a href="{{ q.id }}" class="btn_agree_join"></a>
+						</p>
+					</div>
+					<div class="cb"></div>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+		{% else %}
+		<p class="ml50 mt20">当前没有加入公馆请求!</p>
+		{% endif %}
+	</div><!-- joinRepoRequest -->
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	var form_borrow_accept = function() {
+		$("#form_borrow_accept").submit(function(event) {
+			event.preventDefault();
+			var vals = $(this).serialize();
+			$.post("/cabinet/borrow_accept/", vals, function(json) {
+				if(json['success'] == true) {
+					window.location.reload();
+				} else {
+					alert(json['message']);
+				}
+			});
+		});
+	};
+	// form_borrow_accept
+
+	var form_del_ebook_request = function() {
+		$("#form_del_ebook_request").submit(function(event) {
+			event.preventDefault();
+			var vals = $(this).serialize();
+			$.post("/cabinet/del_ebook_request/", vals, function(json) {
+				if(json['success'] == true) {
+					window.location.reload();
+				} else {
+					alert("删除电子书请求失败!");
+				}
+			});
+		});
+	};
+	// form_del_ebook_request
+
+	var form_join_repo_process = function() {
+		$("#form_join_repo_process").submit(function(event) {
+			event.preventDefault();
+			var vals = $(this).serialize();
+			$.post("/cabinet/join_repo_process/", vals, function(json) {
+				if(json['success'] == true) {
+					window.location.reload();
+				} else {
+					alert(json['message']);
+				}
+			});
+		});
+	};
+	// form_join_repo_process
+
+	$(document).ready(function() {
+		$(".submenu")[0].id = "submenu-selected";
+		$(".submenu:eq(0)").click(function() {
+			return false;
+		});
+		
+		form_borrow_accept();
+		$(".btn_reject").click(function(event) {
+			event.preventDefault(); 
+			var ret = confirm("您确定要拒绝" + $(this).parent().parent().find(".userinfo").text() + "的借阅请求吗？");
+			if ( ret == false ) 
+				return;
+			$("#form_borrow_accept #brid").val(this.href.split('/').reverse()[0]);
+			$("#form_borrow_accept #accepted").val(0);
+			$("#form_borrow_accept").submit();
+		});
+		$(".btn_agree").click(function(event) {
+			event.preventDefault();
+			$("#form_borrow_accept #brid").val(this.href.split('/').reverse()[0]);
+			$("#form_borrow_accept #accepted").val(1);
+			$("#form_borrow_accept").submit();
+		});
+		
+		form_del_ebook_request();
+		$(".btn_del_ebook_rqst").click(function(event) {
+			event.preventDefault();
+			$("#form_del_ebook_request #eqid").val(this.href.split('/').reverse()[0]);
+			$("#form_del_ebook_request").submit();
+		});
+		
+		form_join_repo_process();
+		$(".btn_del_join").click(function(event) {
+			event.preventDefault(); 
+			var ret = confirm("您确定要拒绝" + $(this).parent().parent().find(".userinfo").text() + "的加入公馆请求吗？");
+			if ( ret == false ) 
+				return;			
+			$("#form_join_repo_process #jr_id").val(this.href.split('/').reverse()[0]);
+			$("#form_join_repo_process #accepted").val(0);
+			$("#form_join_repo_process").submit();
+		});
+		$(".btn_agree_join").click(function(event) {
+			event.preventDefault();
+			$("#form_join_repo_process #jr_id").val(this.href.split('/').reverse()[0]);
+			$("#form_join_repo_process #accepted").val(1);
+			$("#form_join_repo_process").submit();
+		});		
+	});
+</script>
+{% endblock %} 

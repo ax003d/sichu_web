@@ -1,0 +1,103 @@
+#username, #password {
+	border: none;
+	width: 204px;
+	height: 40px;
+	line-height: 18px;
+	padding-left: 36px;
+	/*text-indent: 36px;*/
+	font-family: "Arial";
+	font-size: 16px;
+	color: #FFFFFF;
+}
+#username {
+	background-image: url(/static/img/username_bg.jpg);
+}
+#password {
+	background-image: url(/static/img/pwd_bg.jpg);
+}
+.btn_reg, .btn_anony, .btn_weibo_login, .btn_download {
+	position: absolute;
+	width: 98px;
+	height: 48px;
+}
+.btn_reg {
+	right: 108px;
+	top: 36px;	
+}
+.btn_weibo_login {
+	right: 224px;
+	top: 36px;	
+}
+.btn_anony {
+	right: 340px;
+	top: 36px;
+}
+.btn_download {
+	right: 456px;
+	top:36px;
+}
+.btn_reg:link, .btn_anony:link, .btn_weibo_login:link, .btn_download:link {
+	background-position: 0px -144px;
+}
+.btn_reg:link {
+	background: url(/static/img/btn_reg.png);	
+}
+.btn_anony:link {
+	background: url(/static/img/btn_anony.png);
+}
+.btn_weibo_login:link {
+	background: url(/static/img/weibo_login.png);
+}
+.btn_download:link {
+	background: url(/static/img/android_download.png);
+}
+.btn_reg:hover, .btn_anony:hover, .btn_weibo_login:hover, .btn_download:hover {
+	background-position: 0px -48px;
+}
+.btn_reg:active, .btn_anony:active, .btn_weibo_login:active, .btn_download:active {
+	background-position: 0px -96px;
+}
+.btn_login {
+	margin-top: 16px;
+	width: 81px;
+	height: 40px;
+}
+.btn_login:link {
+	background: url(/static/img/btn_login.png);
+	background-position: 0px -120px;
+}
+.btn_login:hover {
+	background-position: 0px -40px;
+}
+.btn_login:active {
+	background-position: 0px -80px;
+}
+#random_books {
+	background-image: url(/static/img/frame.png);
+	background-repeat: no-repeat;
+	background-position: bottom;
+	padding-bottom: 50px;
+}
+.cover {
+	width: 110px;
+	height: 140px;
+}
+.prev, .nxt {
+	width: 19px;
+	height: 30px;
+}
+.prev {
+	background: url(/static/img/prev.png);
+}
+.nxt {
+	background: url(/static/img/nxt.png);
+}
+.prev:link, .nxt:link {
+	background-position: 0px -90px;
+}
+.prev:hover, .nxt:hover {
+	background-position: 0px -30px;
+}
+.prev:active, .nxt:active {
+	background-position: 0px -60px;
+}

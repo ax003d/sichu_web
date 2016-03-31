@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" href="/static/css/base.css">
+		<link rel="stylesheet" href="/static/css/common.css">
+		<link rel="stylesheet" href="/static/css/register.css">
+		<title>注册&nbsp;|&nbsp;私橱网</title>
+	</head>
+	<body class="big_bg h">
+		<div id="inner_body" class="w600 bc">
+			<h1>私橱网</h1>
+			<a href="/"></a>
+			<p class="had">
+				已有私橱网账号？
+			</p>
+			<div class="cb"></div>
+			{% if weibo %}
+			<img src="{{ weibo.avatar }}" alt="weibo avatar" />
+			{{ weibo.screen_name }}
+			<p>Will bind this weibo after register!</p>
+			{% endif %}
+			<span class="tooltip-like"> <span class="top"> </span> <span class="middle">
+					<form id="form_register" action="" method="post">
+						{% csrf_token %}
+						<fieldset>
+							<legend>
+								注册
+							</legend>
+							<table class="ml70">
+								<tbody>
+									<tr>
+										{% if weibo %}
+										<input type="hidden" name="weibo" value="{{ weibo.uid }}"/>
+										{% endif %}
+										<td class="tr"><label for="username">用户名：</label></td>
+										<td>
+										<input type="text" name="username" id="usrname" class="text" value="{{ username }}"/>
+										</td>
+										<td id="username_err" class="none f14 color12">用户名为 3~16  个字符!</td>
+										<td id="username_exist" class="none f14 color12">该用户名已被注册!</td>
+									</tr>
+									<tr>
+										<td class="tr"><label for="email">电子邮件：</label></td>
+										<td>
+										<input type="text" name="email" id="email" class="text" value="{{ email }}"/>
+										</td>
+										<td id="email_err" class="none f14 color12">请输入正确的 email地址!</td>
+										<td id="email_used" class="none f14 color12">该邮箱已被注册!</td>
+									</tr>
+									<tr>
+										<td class="tr"><label for="password_1">密码：</label></td>
+										<td>
+										<input type="password" name="password_1" id="password_1" class="text" />
+										</td>
+										<td id="pwd1_err" class="none f14 color12">密码为 6~12 个字符!</td>
+									</tr>
+									<tr>
+										<td class="tr"><label for="password_2">确认密码：</label></td>
+										<td>
+										<input type="password" name="password_2" id="password_2" class="text" />
+										</td>
+										<td id="pwd2_err" class="none f14 color12">两次输入的密码不一致!</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+										<input type="image" src="/static/img/reg_btn_reg.png" alt="注册"/>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</fieldset>
+					</form><!-- form_register --> </span> <span class="bottom"></span> </span>
+			<p class="tc mt20 color3 f13">
+				&copy;2012私橱网
+			</p>
+		</div><!-- inner_body -->
+		<script type="text/javascript" src="/static/js/jquery-1.7.1.js"></script>
+		<script type="text/javascript" src="/static/js/sichu.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				window.onresize = function() {
+					var mt = $("body").height() - 720;
+					if(mt < 36) {
+						mt = 36;
+					}
+					$("#inner_body").css("margin-top", mt + "px");
+				};
+				window.onresize();
+
+				$("#form_register").submit(function(event) {
+					event.preventDefault();
+					var username = $("#usrname");
+					var email = $("#email");
+					var pwd1 = $("#password_1");
+					var pwd2 = $("#password_2");
+
+					$("#username_err").hide();
+					$("#username_exist").hide();
+					$("#email_err").hide();
+					$("#email_used").hide();
+					$("#pwd1_err").hide();
+					$("#pwd2_err").hide();
+
+					if(!cabinet.check_length(username, 3, 16)) {
+						$("#username_err").show();
+						return false;
+					}
+					if(!cabinet.check_email(email)) {
+						$("#email_err").show();
+						return false;
+					}
+					if(!cabinet.check_length(pwd1, 6, 12)) {
+						$("#pwd1_err").show();
+						return false;
+					}
+					if(pwd1.val() != pwd2.val()) {
+						$("#pwd2_err").show();
+						return false;
+					}
+
+					var vals = $(this).serialize();
+					$.post("/cabinet/register/", vals, function(json) {
+						if (json['user_exist']) {
+							$("#username_exist").show();
+						}				
+						if(json['email_used'] == true) {
+							$("#email_used").show();
+						}
+						if(json['success'] == true) {
+							alert("注册成功，点击确认进入登陆页面!");
+							window.location = "/";
+						}
+					});
+				});
+			});
+
+		</script>
+	</body>
+</html>

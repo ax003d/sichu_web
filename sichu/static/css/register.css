@@ -1,0 +1,61 @@
+.tooltip-like span.top {
+	display: block;
+	width: 610px;
+	height: 16px;
+	background: url(/static/img/tt-top.png) no-repeat top;
+}
+.tooltip-like span.middle {
+	display: block;
+	width: 610px;
+	background: url(/static/img/tt-middle.png) repeat bottom;
+}
+.tooltip-like span.bottom {
+	display: block;
+	width: 610px;
+	height: 55px;
+	background: url(/static/img/tt-bottom.png) no-repeat bottom;
+}
+#username {
+}
+label {
+	font-family: "微软雅黑";
+	font-size: 16px;
+	font-weight: bold;
+	color: #666666;
+}
+input.text {
+	border: solid 1px #D7D7D7;
+	padding: 4px;
+	width: 220px;
+	height: 24px;
+}
+td {
+	padding: 8px;
+}
+legend {
+	font-family: "微软雅黑";
+	font-size: 26px;
+	color: #666666;
+	padding-left: 32px;
+	margin-bottom: 32px;
+}
+h1 {
+	font-family: "微软雅黑";
+	font-size: 44px;
+	color: #BF5F1E;
+	float: left;
+}
+a.login {
+	display: block;
+	float: right;
+	width: 88px;
+	height: 44px;
+	margin-top: 8px;
+	background-image: url(/static/img/reg_btn_login.png);
+}
+.had {
+	float: right;
+	font-size: 14px;
+	color: #666666;
+	margin-top: 20px;
+}

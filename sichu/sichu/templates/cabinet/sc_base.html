@@ -1,0 +1,111 @@
+{% extends "cabinet/gen_base.html" %}
+
+{% block content-profile %}
+{% if user.username %}
+<div class="avatar w70 h70 fl">
+	<div class="inner-avatar">
+		<img width="60" height="60" alt="Avatar for {{ user.username }}" src="{{ user.get_avatar }}">
+	</div>
+</div>
+<div class="fl ml8 desc">
+	<p class="fl4 color6">
+		{{ user.get_nickname }}<a href="/accounts/logout/" class="ml8"><img src="/static/img/logout.png" alt="logout"/></a>
+	</p>
+	<p>
+		{% with user.get_weibo as weibo %}
+		{% if weibo %}
+		<a href="http://weibo.com/{{ weibo.uid }}" class="icon-weibo-enabled f12 color6 no_unl">{{ weibo.screen_name }}</a>
+		{% else %}
+		<a href="{{ weibo_auth }}" class="icon-weibo-disabled f12 color6 no_unl">绑定微博</a>
+		{% endif %}
+		{% endwith %}
+	</p>
+</div>
+<div class="cl"></div>
+<table class="mt8">
+	<thead>
+		<tr class="color7">
+			<th class="w64 dot_border tc">藏书量</th>
+			<th class="w64 dot_border tc">借出</th>
+			<th class="w64 tc">借入</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr class="color8 f20 farial tc">
+			<td class="dot_border">{{ user.book_num }}</td>
+			<td class="dot_border">{{ user.book_loaned|length }}</td>
+			<td>{{ user.bookborrowrecord_set.count }}</td>
+		</tr>
+		<tr>
+			<td class="pl15 pt5 pb5"><a href="#" id="btn_book_plus"></a></td>
+			<td></td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+<ul class="mt8 f16">
+	<li class="submenu">
+		<a href="/cabinet/sys_msgs/" class="no_unl color9 fb icon-mail">信件{% if user.message_num %}<span>&nbsp;({{ user.message_num }})</span>{% endif %}</a>
+	</li>
+	<li class="submenu">
+		<a href="/cabinet/personal_info/" class="no_unl color9 fb icon-profile">个人资料</a>
+	</li>
+	<li class="submenu">
+		<a href="/cabinet/mybookshelf/" class="no_unl color9 fb icon-cabinet">我的书橱</a>
+	</li>
+	<li class="submenu">
+		<a href="/cabinet/friends/" class="no_unl color9 fb icon-friends">橱友</a>
+	</li>
+</ul>
+{% else %} <a href="/cabinet/register/" class="btn_reg pa block no_out_ln"></a>
+<form class="form_login" action="/accounts/login/" method="post">
+	{% csrf_token %}
+	<fieldset>
+		<legend class="fyh f20 color5">
+			登录
+		</legend>
+		<input type="text" id="username" name="username" />
+		<input type="password" id="password" name="password" />
+		<a href="#" class="btn_login block mt15 fl no_out_ln"></a>
+		<input type="submit" class="none" value="登录" />
+		<a href="/registration/password_reset/" class="fl4 fst no_unl color4 block fl mt20 ml20 no_out_ln">忘记密码?</a>
+	</fieldset>
+</form>
+{% endif %}
+{% endblock %}
+
+{% block content-news %} <img src="/static/img/the_news.png" alt="the news" />
+<ul>
+	{% for n in news %}
+	<li class="news-item">
+		<p class="fl">
+			<a href="/cabinet/user/{{ n.lead.id }}/" class="userinfo color6">{{ n.lead.get_nickname }}</a>{{ n.news|safe }}
+		</p>
+		<p class="fr">
+			{{ n.datetime|date:"c" }}
+		</p>
+		<div class="cr"></div>
+	</li>
+	{% endfor %}
+</ul>
+<!-- <a href="#" class="mt8 fr">更多 >></a> -->
+{% endblock %}
+
+{% block plus-script %}
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#btn_book_plus").click(function(event) {
+			event.preventDefault();
+			cabinet.show_dialog($("#dlgAddBook"));
+		});
+		
+		$(".btn_login").click(function() {
+			$(".form_login").submit();
+		});
+
+		$(".submenu").click(function() {
+			$(this).children()[0].click();
+		});
+	}); 
+</script>
+{% endblock %}

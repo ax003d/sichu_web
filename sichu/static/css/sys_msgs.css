@@ -1,0 +1,34 @@
+.sysMsgItem a {
+	color: #D37951;
+	text-decoration: none;
+}
+.hightLight {
+	background: #F8E8E0;
+}
+.remark {
+	width: 464px;
+	font-size: 12px;
+	padding: 8px;
+	margin-top: 4px;
+	border: solid 1px #CCCCCC;
+}
+.btn_del, .btn_agree, .btn_del_ebook_rqst, .btn_del_join, .btn_agree_join, .btn_reject {
+	display: block;
+	float: left;
+	width: 50px;
+	height: 28px;	
+	margin-top: 8px;
+	margin-left: 8px;
+}
+.btn_del, .btn_del_ebook_rqst, .btn_del_join {
+	background: url(/static/img/btn_del.png);
+}
+.btn_agree, .btn_agree_join {
+	background: url(/static/img/btn_agree.png);
+}
+.btn_reject {
+	background: url(/static/img/btn_reject.png);
+}
+.btn_del_ebook_rqst {
+	margin-left: 0px;
+}

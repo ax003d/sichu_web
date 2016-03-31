@@ -1,0 +1,61 @@
+<ul>
+	{% for bo in my_books %}
+	<li class="loanedBookItem ml50 mr50 mt20 pb10 {% if not forloop.last %}bb{% endif %}">
+		<div>
+			<div class="fl">
+				<a href="/cabinet/book/{{ bo.book.id }}/"><img class="w120 h140" alt="{{ bo.book.title }}" src="{{ bo.book.get_image_url }}" /></a>
+			</div>
+			<div class="fl ml16 lh200 f12">
+				<form id="form_edit_bookownership_{{ bo.id }}" class="form_edit_bookownership" action="/cabinet/edit_bookownership/" method="post">
+					{% csrf_token %}
+					<fieldset>
+						<input type="hidden" id="bookownership" name="bookownership" value="{{ bo.id }}"/>
+						<p class="f14">
+							<a href="/cabinet/book/{{ bo.book.id }}/" class="f14 color17 no_unl">《{{ bo.book.title }}》</a>
+						</p>
+						<p>
+							状态：&nbsp;&nbsp;
+							<select name="status">
+								<option value="1" {% ifequal bo.status "1" %}selected="1"{% endifequal%}>可借</option>
+								<option value="2" {% ifequal bo.status "2" %}selected="1"{% endifequal%}>不可借</option>
+								<option value="3" {% ifequal bo.status "3" %}selected="1"{% endifequal%}>借出</option>
+								<option value="4" {% ifequal bo.status "4" %}selected="1"{% endifequal%}>丢失</option>
+							</select>
+						</p>
+						<p>
+							电子版：
+							<select name="has_ebook">
+								<option value="1" {% if bo.has_ebook %}selected="1"{% endif %}>&nbsp;&nbsp;有&nbsp;&nbsp;</option>
+								<option value="0" {% if not bo.has_ebook %}selected="1"{% endif %}>&nbsp;&nbsp;无&nbsp;&nbsp;</option>
+							</select>
+						</p>
+						<p>
+							可见：
+							<select name="visible">
+								<option value="1" {% ifequal bo.visible 1 %}selected="1"{% endifequal %}>所有人</option>
+								<option value="2" {% ifequal bo.visible 2 %}selected="1"{% endifequal %}>好友可见</option>
+								<option value="3" {% ifequal bo.visible 3 %}selected="1"{% endifequal %}>仅自己可见</option>
+							</select>
+						</p>
+						<p class="fl">
+							备注：
+						</p>
+						<textarea class="remark fl" name="remark">{{ bo.remark }}</textarea>
+					</fieldset>
+				</form><!-- form_edit_bookownership -->
+				<form id="form_del_bookownership_{{ bo.id }}" action="/cabinet/del_bookownership/" method="post">
+					<fieldset>
+						{% csrf_token %}
+						<input type="hidden" id="bookownership" name="bookownership" value="{{ bo.id }}"/>
+					</fieldset>
+				</form><!-- form_del_bookownership -->
+				<p class="cb fr">
+					<a id="btn_del_{{ bo.id }}" class="btn_del ml10 mt10"></a>
+					<a id="btn_save_{{ bo.id }}" class="btn_save ml10 mt10"></a>
+				</p>
+			</div>
+			<div class="cb"></div>
+		</div>
+	</li>
+	{% endfor %}
+</ul>

@@ -1,0 +1,84 @@
+<div id="dlgAddBook" class="dialog none">
+	<div class="dialog-title">
+		<p>
+			添加书籍
+		</p>
+		<a href="#"></a>
+	</div>
+	<div class="dialog-content">
+		<div>
+			<form id="form_add_book" action="cabinet/add_book/" method="post">
+				{% csrf_token %}
+				<div class="step1">
+					<img src="/static/img/add_book_step_1.png" alt="add book step 1" />
+					<input type="text" name="isbn" id="isbn" class="fl" value="请输入书籍ISBN" />
+					<p id="isbn_err" class="none f14 color12 fl ml10 mt25">
+						ISBN错误!
+					</p>
+					<img src="/static/img/add_book_isbn_tip.png" alt="isbn tip" class="ml40 mt16 mb30 fl" />
+					<p class="f14 color13 mt15 ml8 fl w240">
+						ISBN码为书籍背面的条形码处的数字串或您可以上豆瓣网搜书名得到书籍的ISBN
+					</p>
+					<a href="#" class="btn_nxt" id="btn_chk_isbn"></a>
+					<div class="cb"></div>
+				</div><!-- step1 -->
+				<div class="step2 none">
+					<img src="/static/img/add_book_step_2.png" alt="add book step 2" />
+					<div class="chkBookInfo">
+						<p class="ml40 mt16 mb20">
+							请输入ISBN!
+						</p>
+					</div>
+					<div>
+						<a href="#" class="btn_prev go_step_1"></a>
+						<a href="#" class="btn_nxt go_step_3"></a>
+					</div>
+					<div class="cb"></div>
+				</div><!-- step2 -->
+				<div class="step3 none">
+					<img src="/static/img/add_book_step_3.png" alt="add book step 3" />
+					<div class="radio-set">
+						<input type="radio" id="status1" name="status" value="1" checked="checked" />
+						<label for="status1">可借</label>
+						<input type="radio" id="status2" name="status" value="2" />
+						<label for="status2">不可借</label>
+						<input type="radio" id="status3" name="status" value="3" />
+						<label for="status3">借出</label>
+						<input type="radio" id="status4" name="status" value="4" />
+						<label for="status4">丢失</label>
+					</div>
+					<div class="radio-set">
+						<input type="radio" id="has_ebook_1" name="has_ebook" value="1" />
+						<label for="has_ebook_1">有电子版</label>
+						<input type="radio" id="has_ebook_2" name="has_ebook" value="0" checked="checked" />
+						<label for="has_ebook_2">无电子版</label>
+					</div>
+					<div class="radio-set">
+						<input type="radio" id="visible_all" name="visible" value="1" checked="checked" />
+						<label for="visible_all">所有人</label>
+						<input type="radio" id="visible_friends" name="visible" value="2" />
+						<label for="visible_friends">好友可见</label>
+						<input type="radio" id="visible_private" name="visible" value="3" />
+						<label for="visible_private">仅自己可见</label>
+					</div>
+					<textarea id="remark" name="remark">填写备注</textarea>
+					<div>
+						<a href="#" class="btn_prev go_step_2"></a>
+						<a href="#" class="btn_finish"></a>
+					</div>
+				</div><!-- step3 -->
+				<div class="step4 none">
+					<img src="/static/img/add_book_step_3.png" alt="add book step 3" />
+					<div class="ml40 mt16 mb20 tc">
+						<img src="/static/img/books.png" alt="books" class="fl" />
+						<p class="fl mt50">
+							<span class="color15 f21 fyh">成功添加书籍!</span>
+							<a href="#" class="go_step_1 color14 ml30">继续添加</a>
+						</p>
+						<div class="cb"></div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div><!-- dlgAddBook -->

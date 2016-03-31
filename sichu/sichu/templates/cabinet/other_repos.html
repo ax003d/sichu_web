@@ -1,0 +1,63 @@
+{% if applies %} 
+<h2>申请中</h2>
+<table class="ui-widget ui-widget-content ui-corner-all page-table">
+	<thead>
+		<tr class="ui-widget-header">
+			<th width="200"></th>
+			<th class="w80">馆名</th>
+			<th class="w80">管理员</th>
+			<th class="w80">成员人数</th>
+			<th class="w80">藏书量</th>
+			<th>说明</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for ar in applies %}
+		<tr>
+			<td><img src="/static/img/repo.jpg" alt="repos"></td>
+			<td>{{ ar.repo.name }}</td>
+			<td>
+			{% for a in r.admin.all %} 
+			<a href="/cabinet/user/{{ a.id }}/" class="userinfo">{{ a.full_name }}</a>
+			{% endfor %} 
+			</td>
+			<td>{{ ar.repo.members.count }}</td>
+			<td>{{ ar.repo.book_num }}</td>
+			<td>{{ ar.repo.description }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+<br/>
+{% endif %}
+<h2>其他公馆</h2>
+<table class="ui-widget ui-widget-content ui-corner-all page-table">
+	<thead>
+		<tr class="ui-widget-header">
+			<th width="200"></th>
+			<th class="w80">馆名</th>
+			<th class="w80">管理员</th>
+			<th class="w80">成员人数</th>
+			<th class="w80">藏书量</th>
+			<th>说明</th>
+			<th class="w80">操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for r in repos %}
+		<tr>
+			<td><img src="/static/img/repo.jpg" alt="repos"></td>
+			<td>{{ r.name }}</td>
+			<td>
+			{% for a in r.admin.all %} 
+			<a href="/cabinet/user/{{ a.id }}/" class="userinfo">{{ a.full_name }}</a>
+			{% endfor %}
+			</td> 
+			<td>{{ r.members.count }}</td>
+			<td>{{ r.book_num }}</td>
+			<td>{{ r.description }}</td>
+			<td><a href="#" onclick="cabinet.on_repo_apply({{ r.id }})">申请加入</a></td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

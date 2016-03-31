@@ -1,0 +1,109 @@
+<h2>书籍借阅</h2>
+<table class="ui-widget ui-widget-content ui-corner-all">
+	<tbody>
+		<tr>
+			<td rowspan="4"><img src="{{ bo.book.get_image_url }}" alt="{{ bo.book.title }}"></td>
+			<td>书名: </td>
+			<td> <a href="/cabinet/book/{{ bo.book.id }}/" class="bookinfo">{{ bo.book.title }}</a> </td>
+		</tr>
+		<tr>
+			<td> 作者： </td>
+			<td> {{ bo.book.author }} </td>
+		</tr>
+		<tr>
+			<td>ISBN：</td><td>{{ bo.book.isbn }}</td>
+		</tr>
+		<tr>
+			<td>豆瓣链接</td>
+			<td><a href="http://book.douban.com/subject/{{ bo.book.douban_id }}/" target="_blank">豆瓣链接</a></td>
+		</tr>
+	</tbody>
+</table>
+{% if is_self %}
+<h3>状态信息</h3>
+<div class="ui-widget ui-widget-content ui-corner-all">
+<form id="form_edit_bookownership" action="cabinet/edit_bookownership/" method="post">
+	{% csrf_token %}
+	<p class="validate-tips"></p>
+	<fieldset>
+		<input type="hidden" id="bookownership" name="bookownership" value="{{ bo.id }}"/>
+		<div class="radio-set">
+			<input type="radio" id="status1" name="status" value="1" {% ifequal bo.status "可借" %}checked="checked"{% endifequal %}/>
+			<label for="status1">可借</label>
+			<input type="radio" id="status2" name="status" value="2" {% ifequal bo.status "不可借" %}checked="checked"{% endifequal %}/>
+			<label for="status2">不可借</label>
+			<input type="radio" id="status3" name="status" value="3" {% ifequal bo.status "借出" %}checked="checked"{% endifequal %}/>
+			<label for="status3">借出</label>
+			<input type="radio" id="status4" name="status" value="4" {% ifequal bo.status "丢失" %}checked="checked"{% endifequal %}/>
+			<label for="status4">丢失</label>
+		</div>
+		<div class="radio-set">
+			<input type="radio" id="has_ebook_1" name="has_ebook" value="1" {% if bo.has_ebook %}checked="checked"{% endif %}/>
+			<label for="has_ebook_1">有电子版</label>
+			<input type="radio" id="has_ebook_2" name="has_ebook" value="0" {% if not bo.has_ebook %}checked="checked"{% endif %}/>
+			<label for="has_ebook_2">无电子版</label>
+		</div>
+		<label for="remark">备注：</label>
+		<input type="text" name="remark" id="remark" class="text ui-widget-content ui-corner-all" value="{{ bo.remark }}"/>
+		<input type="submit" value="保存"/>
+</form>
+</div>
+{% else %}
+<table class="ui-widget ui-widget-content ui-corner-all">
+	<thead>
+		<tr class="ui-widget-header">
+			<th colspan="2">拥有者</td>
+			<th>状态</td>
+			<th>电子版</th>
+			<th>备注</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td width="40">
+				<img width="40" height="40" alt="Avatar for {{ bo.owner.username }}" src="{{ bo.owner.get_avatar }}">
+			</td>
+			<td><a href="/cabinet/user/{{ bo.owner.id }}/" class="userinfo">{{ bo.owner.get_nickname }}</a></td>
+			<td align="center">{{ bo.status }}</td>
+			<td align="center">{% if bo.has_ebook %}有{% else %}无{% endif %}</td>
+			<td align="center">{{ bo.remark }}</td>
+		</tr>
+	</tbody>
+</table>
+<div class="book-request">
+<p class="validate-tips" style="display: none;"></p>
+{% ifequal bo.status "可借" %} <a href="#" class="button" onclick="cabinet.on_borrow_request({{ bo.id }})">申请借阅</a>{% endifequal %}
+{% if bo.has_ebook %}
+<form id="form_ebook_request" style="display: none;" method="post">
+	{% csrf_token %}
+	<input type="hidden" id="bo_id" name="bo_id" value="{{ bo.id }}"/>
+</form> 
+<a id="btn_request_ebook" class="button" href="#">索取电子版</a>
+{% endif %}
+</div><!-- book-request -->
+{% endif %}<!-- is_self -->
+<br/>
+<h3>借阅记录</h3>
+<table class="ui-widget ui-widget-content ui-corner-all">
+	<thead>
+		<tr class="ui-widget-header">
+			<th>借阅时间</td>
+			<th colspan="2">借阅人</td>
+			<th>预计归还日期</td>
+			<th>归还日期</td>
+		</tr>
+	</thead>
+	<tbody>
+		{% for br in borrow_records %}
+		<tr>
+			<td>{{ br.borrow_date|date:"c" }}</td>
+			<td width="40">
+				<img width="40" height="40" alt="Avatar for {{ br.borrower.username }}" src="{{ br.borrower.get_avatar }}">
+			</td>
+			<td><a href="/cabinet/user/{{ br.borrower.id }}/" class="userinfo">{{ br.borrower.get_nickname }}</a></td>
+			<td>{{ br.planed_return_date|date:"c" }}</td>
+			<td>{{ br.returned_date|date:"c" }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

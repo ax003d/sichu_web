@@ -1,0 +1,249 @@
+{% extends "cabinet/base.html" %}
+
+{% block title %}{{ user.get_nickname }}的首页&nbsp;|&nbsp;私橱网{% endblock %}
+
+{% block content %}
+<div id="inner-body">
+	<div class="ui-layout-north">
+		<div class="inner-north">
+			<div class="logo">
+				<img src="/static/img/logo.png" alt="私橱网Logo"/>
+			</div>
+			<div class="nav">
+				<ul>
+					<li>
+						<a href="#" class="menu-index ui-corner-top">首页</a>
+					</li>
+					<li>
+						<a href="#" class="menu-search ui-corner-top">搜索</a>
+					</li>
+					<li>
+						<a href="#" class="menu-all-books ui-corner-top">私橱</a>
+						<ul>
+							<li>
+								<a href="#" class="menu-add-book">添加书籍</a>
+							</li>
+							<li>
+								<a href="#" class="menu-all-books">全部书籍</a>
+							</li>
+							<li>
+								<a href="#" class="menu-loaned-books">借出的书籍</a>
+							</li>
+							<li>
+								<a href="#" class="menu-borrowed-books">借入的书籍</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" class="menu-repos ui-corner-top">公馆</a>
+						<ul>
+							<li>
+								<a href="#" class="menu-repos">我的公馆</a>
+							</li>
+							<li>
+								<a href="#" class="menu-other-repos">其他公馆</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#" class="menu-about ui-corner-top">关于</a>
+					</li>
+				</ul>
+			</div>
+			<div class="logged_in">
+				<img width="40" height="40" alt="Avatar for {{ user.username }}" src="{{ user.get_avatar }}"> 
+				<a href="#" id="btn_sys_msg" class="button menu-sys-msgs">{{ user.borrow_requests.count|add:user.ebook_requests.count|add:user.join_repo_requests.count }}</a>
+				<h3> 欢迎, <a href="/cabinet/user/{{ user.id }}/" class="userinfo">{{ user.get_nickname }}</a> | <a href="/accounts/logout">退出</a></h3>
+			</div>
+		</div>
+	</div><!-- ui-layout-north -->
+	<div class="wrap-container-1">
+		<div class="ui-layout-west">
+			<div id="accordion">
+				<h3><a href="#">私橱</a></h3>
+				<div class="book-cabinets">
+					<ul>
+						<li>
+							<a href="#" class="menu-add-book">添加书籍</a>
+						</li>
+						<li>
+							<a href="#" class="menu-all-books">全部书籍</a>
+						</li>
+						<li>
+							<a href="#" class="menu-loaned-books">借出的书籍</a>
+						</li>
+						<li>
+							<a href="#" class="menu-borrowed-books">借入的书籍</a>
+						</li>
+						{% for bc in book_cabinets %}
+						<li>
+							<a href="/cabinet/{{ bc.id }}/" class="cabinet">{{ bc.name }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				<h3><a href="#">公馆</a></h3>
+				<div>
+					<ul>
+						<li>
+							<a class="menu-repos" href="#">我的公馆</a>
+						</li>
+						<li>
+							<a class="menu-other-repos" href="#">其他公馆</a>
+						</li>
+					</ul>
+				</div>
+				<h3><a href="#">个人信息</a></h3>
+				<div>
+					<ul>
+						<li>
+							<a class="menu-personal-info" href="#">个人信息</a>
+						</li>
+						<li>
+							<a class="menu-sys-msgs" href="#">系统消息</a>
+						</li>
+					</ul>
+				</div>
+			</div><!-- accordion -->
+			<div class="height-padding"></div>
+		</div><!-- ui-layout-west -->
+		<div class="ui-layout-center">
+			{% include "cabinet/news.html" %}
+		</div><!-- ui-layout-center -->
+	</div>
+	<div class="ui-layout-south">
+		<div class="inner-south">
+			<p class="copyright">
+				&copy; 2012 <span>私橱网</span>
+			</p>
+			<p class="statistic">
+				会员：<span>{{ user_num }}</span> | 藏书量：<span>{{ book_num }}</span>
+			</p>
+		</div>
+	</div><!-- ui-layout-south -->
+	<div id="loading">
+		<img src="/static/img/loader.gif" alt="loading icon"/>
+	</div>
+</div><!-- inner-body -->
+<script type="text/javascript" src="/static/js/cabinet.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#accordion").accordion({
+			autoHeight : false,
+			navigation : true
+		});
+
+		$(".menu-index").click(function() {
+			cabinet.show_news();
+		});
+
+		$(".menu-sys-msgs").click(function() {
+			cabinet.show_sys_msgs();
+		});
+
+		$(".menu-personal-info").click(function() {
+			cabinet.show_personal_info();
+		});
+
+		$(".menu-add-book").click(function() {
+			cabinet.show_add_book();
+		});
+
+		$(".menu-all-books").click(function() {
+			cabinet.show_all_books();
+		});
+
+		$(".menu-loaned-books").click(function() {
+			cabinet.show_loaned_books();
+		});
+
+		$(".menu-borrowed-books").click(function() {
+			cabinet.show_borrowed_books();
+		});
+
+		$(".menu-search").click(function() {
+			cabinet.show_search();
+		});
+
+		$(".menu-about").click(function() {
+			cabinet.show_about();
+		});
+
+		$(".menu-repos").click(function() {
+			cabinet.show_repos();
+		});
+
+		$(".menu-other-repos").click(function() {
+			cabinet.show_other_repos();
+		});
+
+		$(".book-cabinets a.cabinet").click(function(event) {
+			cabinet.show_cabinet(event, this.href);
+		});
+
+		$(".userinfo").livequery('click', function(event) {
+			cabinet.show_userinfo(event, this.href);
+		});
+
+		$(".bookinfo").livequery('click', function(event) {
+			cabinet.show_bookinfo(event, this.href);
+		});
+
+		$(".bookownershipinfo").livequery('click', function(event) {
+			cabinet.show_bookownershipinfo(event, this.href);
+		});
+
+		$(".repoinfo").livequery('click', function(event) {
+			cabinet.show_repoinfo(event, this.href);
+		});
+
+		$("input:submit, .button").livequery(function() {
+			$(this).button();
+		});
+
+		$(".radio-set").livequery(function() {
+			$(this).buttonset();
+		});
+
+		$(".date-picker").livequery(function() {
+			$(this).datepicker({
+				"dateFormat" : "yy-mm-dd"
+			});
+		});
+
+		$(".page-table").livequery(function() {
+			$(this).ariaSorTable({
+				rowsToShow : 10,
+				pager : true
+			});
+		});
+		
+		$("#btn_sys_msg").button({
+			icons: {
+				primary: "ui-icon-mail-closed"
+			}
+		});
+		
+		window.onresize = function() {
+			var center_min_height = $("body").height() - 206;
+			$(".ui-layout-center").css("min-height", center_min_height + "px");
+			$(".ui-layout-center").css("height", center_min_height + "px");
+		};
+		window.onresize();
+
+		if($("#loading").length != 0) {
+			$("#loading").ajaxStart(function() {
+				$(this).show();
+			}).ajaxStop(function() {
+				$(this).hide();
+			});
+		}
+
+		$.ajaxSetup({
+			cache : false,
+			timeout : 15000
+		});
+	});
+	// document.ready
+</script>
+{% endblock %} 

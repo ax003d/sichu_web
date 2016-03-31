@@ -1,0 +1,17 @@
+<ul class="book-list unstyled">
+	{% for bo in bookowns %}
+	<li class="book-item pull-left">
+		<div>
+			<a href="/cabinet/book/{{ bo.book.id }}/" target="_blank"> <img alt="{{ bo.book.title }}" src="{{ bo.book.get_image_url }}" /> </a>
+			<div class="inline">
+				<p class="pull-left">
+					&nbsp;<i class="icon-heart"></i>&nbsp;{{ bo.book.bookownership_set.count }}
+				</p>
+				<p class="pull-left">
+					&nbsp;<i class="icon-eye-open"></i>&nbsp;{{ bo.bookborrowrecord_set.count }}
+				</p>
+			</div>
+		</div>
+	</li>
+	{% endfor %}
+</ul>
