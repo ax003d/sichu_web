@@ -1,5 +1,7 @@
 # Sichu Web Application
 
+![Image of travis-ci](https://travis-ci.org/ax003d/sichu_web.svg?branch=master)
+
 ## Introduction
 
 This is an application that you can manage your own books, and it enables you to share your books with your friends.
