@@ -10,3 +10,6 @@ django-nose==1.4.3
 factory-boy==2.6.1
 -e git+git://github.com/ax003d/pygetui.git#egg=pygetui
 -e git+git://github.com/hiidef/oauth2app.git@f8205e2146477224a666c03bf115ddf3ff7610ff#egg=oauth2app
+django-dotenv==1.4.1
+django-getenv==1.3.1
+dj-database-url==0.3.0
