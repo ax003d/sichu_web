@@ -14,9 +14,9 @@ Generally speaking, this is a django application, to run local, you should have 
 
 You have to install git, python2.7, virtualenv, pip, mysql in your local OS.
 
-Then follow commands below. (Assume that your local MySQL Server's user and password is root/root).
+Then follow commands below. (Assume that your local MySQL Server's user is root without password).
 ```
-$ mysql -u root -proot -e "create database sichu default character set utf8;"
+$ mysql -u root -e "create database sichu default character set utf8;"
 $ cd ~/workspace
 $ git clone git@github.com:ax003d/sichu_web.git
 $ virtualenv ~/workspace/env-sichu
