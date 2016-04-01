@@ -1,6 +1,8 @@
 language: python
 python:
   - "2.7"
+notifications:
+  webhooks: https://hooks.pubu.im/services/xrz176erwzxnt49
 services:
   - mysql
 install:
