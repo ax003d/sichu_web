@@ -1,7 +1,7 @@
 import factory
 
 from django.contrib.auth.models import User
-from cabinet.models import Book
+from cabinet.models import Book, BookOwnership
 
 
 class UserFactory(factory.DjangoModelFactory):
@@ -15,3 +15,10 @@ class BookFactory(factory.DjangoModelFactory):
     isbn = factory.Faker('ean13')
     title = factory.Faker('sentence')
     author = factory.Faker('first_name')
+
+
+class BookOwnFactory(factory.DjangoModelFactory):
+    class Meta:
+        model = BookOwnership
+
+    book = factory.SubFactory(BookFactory)

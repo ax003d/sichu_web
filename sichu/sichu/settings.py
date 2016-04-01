@@ -22,6 +22,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': dj_database_url.parse(env("DATABASE_URI", "mysql://root:@127.0.0.1:3306/sichu")),
 }
+if DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
+    DATABASES['default']['TEST_CHARSET'] = 'utf8'
+    DATABASES['default']['TEST_COLLATION'] = 'utf8_general_ci'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
