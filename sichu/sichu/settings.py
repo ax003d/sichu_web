@@ -18,7 +18,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sichu',
         'USER': 'root',
-        'PASSWORD': 'root',
+        'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '3306',
         'TEST_CHARSET': 'gb2312',
@@ -136,6 +136,7 @@ INSTALLED_APPS = (
     'cabinet',
     'apiserver',
     'tagging',
+    'django_nose'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -186,3 +187,5 @@ GX_APPKEY = ''
 GX_MASTERSECRET = ''
 
 DOUBAN_APIKEY = ""
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

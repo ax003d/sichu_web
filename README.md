@@ -1,6 +1,7 @@
 # Sichu Web Application
 
 ![Image of travis-ci](https://travis-ci.org/ax003d/sichu_web.svg?branch=master)
+![Coverage Status](https://coveralls.io/repos/github/ax003d/sichu_web/badge.svg?branch=master)
 
 ## Introduction
 
