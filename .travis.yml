@@ -5,6 +5,7 @@ services:
   - mysql
 install:
   - pip install -r requirements.txt
+  - pip install coverage==4.0.3
 before_script:
   - mysql -e 'create database sichu;'
 script:
