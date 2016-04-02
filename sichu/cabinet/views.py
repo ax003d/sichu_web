@@ -44,8 +44,8 @@ WISH_BOOKS_PER_PAGE = 16
 
 def get_weibo_client():
     return APIClient(
-        app_key=settings.APP_KEY, 
-        app_secret=settings.APP_SECRET, 
+        app_key=settings.APP_KEY,
+        app_secret=settings.APP_SECRET,
         redirect_uri=settings.CALLBACK_URL)
 
 def index(request):
@@ -98,7 +98,7 @@ def sys_msgs(request):
            'ebook_requests': request.user.ebook_requests(),
            'borrow_requests': request.user.borrow_requests(),
            'join_repo_requests': request.user.join_repo_requests()}
-    ctx.update(csrf(request))    
+    ctx.update(csrf(request))
     return render_to_response('cabinet/sys_msgs.html', ctx)
 
 
@@ -113,7 +113,7 @@ def personal_info(request):
            'weibo_auth': get_weibo_client().get_authorize_url()
            }
     ctx.update(csrf(request))
-    return render_to_response('cabinet/personal_info.html', ctx) 
+    return render_to_response('cabinet/personal_info.html', ctx)
 
 
 def book_info(request, bid):
@@ -187,7 +187,7 @@ def chg_pwd(request):
     except Exception, e:
         results['message'] = str(e)
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 def register(request):
@@ -195,7 +195,7 @@ def register(request):
     ctx.update(csrf(request))
     if request.method == 'GET':
         return render_to_response("registration/register.html", ctx)
-    
+
     try:
         ret = {'success': False,
                'user_exist': False,
@@ -221,7 +221,7 @@ def register(request):
     except Exception, e:
         ret['message'] = str(e)
     json = simplejson.dumps(ret)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -266,7 +266,7 @@ def add_book(request):
 
 def show_user(request, uid):
     try:
-        user = models.User.objects.get(id=uid)        
+        user = models.User.objects.get(id=uid)
         ctx = {'user': user,
                'user_num': models.User.objects.count(),
                'book_num': models.BookOwnership.objects.count(),
@@ -316,7 +316,7 @@ def show_user_v2(request, uid):
     except models.Follow.DoesNotExist:
         pass
     return render_to_response('cabinet/user_info_v2.html', ctx)
-        
+
 
 @login_required
 def show_bookownership(request, boid):
@@ -335,7 +335,7 @@ def edit_bookownership(request):
         if bo.owner != request.user:
             json = simplejson.dumps(results)
             return HttpResponse(json, mimetype='application/json')
-        
+
         visible = request.POST.get('visible')
         bo.status = request.POST['status']
         bo.has_ebook = request.POST['has_ebook'] == '1'
@@ -350,7 +350,7 @@ def edit_bookownership(request):
         traceback.print_exc()
         results['message'] = str(e)
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -370,7 +370,7 @@ def del_bookownership(request):
         traceback.print_exc()
         results['message'] = str(e)
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -397,7 +397,7 @@ def ebook_request(request):
     except Exception, e:
         results['message'] = str(e)
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -421,8 +421,8 @@ def borrow_request(request):
     try:
         bo_ship = request.POST.get('bo_ship')
         if len(models.BookBorrowRequest.objects.filter(
-                bo_ship=bo_ship, 
-                requester=request.user, 
+                bo_ship=bo_ship,
+                requester=request.user,
                 status=0)) != 0:
             results['success'] = True
         else:
@@ -440,7 +440,7 @@ def borrow_request(request):
         # results['message'] = u"借阅请求失败!"
         results['message'] = str(e)
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -478,7 +478,7 @@ def borrow_accept(request):
         logger.exception(str(sys._getframe().f_code.co_name))
         results['message'] = u"处理借阅请求失败!"
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -496,7 +496,7 @@ def del_ebook_request(request):
     except Exception, e:
         results['message'] = u"删除请求失败!"
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')        
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -520,7 +520,7 @@ def return_book(request):
     except Exception, e:
         results['message'] = str(e)
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 def search(request):
@@ -549,7 +549,7 @@ def search(request):
     # search by title/author
     if books == None:
         books = models.Book.objects.filter(
-            Q(title__icontains=keyword) | 
+            Q(title__icontains=keyword) |
             Q(author__icontains=keyword))
     else:
         books = [books]
@@ -623,7 +623,7 @@ def repo_apply(request):
     except Exception, e:
         results['message'] = u"申请加入公馆失败!"
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -651,11 +651,11 @@ def join_repo_process(request):
     except models.JoinRepositoryRequest.DoesNotExist:
         results['success'] = True
         # results['message'] = u"该请求已经处理!"
-    except Exception, e:        
+    except Exception, e:
         results['message'] = u"处理加入公馆请求失败!"
         # results['message'] = str(e)
     json = simplejson.dumps(results)
-    return HttpResponse(json, mimetype='application/json')    
+    return HttpResponse(json, mimetype='application/json')
 
 
 @login_required
@@ -736,7 +736,7 @@ def books_borrowed(request, page):
 
 def books_wanted(request, page):
     page_num = utils.get_page_num(len(request.user.book_wanted()), 5)
-    return books_get_page(request, page, page_num, 'wanted')    
+    return books_get_page(request, page, page_num, 'wanted')
 
 
 def books_wish(request, page):
@@ -775,7 +775,7 @@ def userwanted_v2(request, uid, page):
 @login_required
 def book_want(request):
     ret = {'result': False}
-    
+
     tag = None
     try:
         tag = models.Tag.objects.get(name=u"想借")
@@ -797,7 +797,7 @@ def book_want(request):
         ret['result'] = True
     except IntegrityError:
         ret['message'] = "You have tagged this book as want!"
-    
+
     json = simplejson.dumps(ret)
     return HttpResponse(json, mimetype='application/json')
 
@@ -894,7 +894,7 @@ def login(request, template_name='registration/login.html',
         return HttpResponseRedirect('/cabinet/index/')
 
     """Displays the login form and handles the login action."""
-    redirect_to = request.REQUEST.get(redirect_field_name, '')        
+    redirect_to = request.REQUEST.get(redirect_field_name, '')
 
     if request.method == "POST":
         form = authentication_form(data=request.POST)
@@ -961,9 +961,9 @@ def callback_weibo_auth(request):
     wu = None
     try:
         wu = models.WeiboUser.objects.get(uid=us.id)
-        wu.update(us.screen_name, 
-                  us.profile_image_url, 
-                  token.access_token, 
+        wu.update(us.screen_name,
+                  us.profile_image_url,
+                  token.access_token,
                   token.expires_in)
     except models.WeiboUser.DoesNotExist:
         wu = models.WeiboUser(uid=us.id,
@@ -973,12 +973,12 @@ def callback_weibo_auth(request):
                               expires_in=token.expires_in)
         wu.save()
 
-    # if user already login, bind weibo to this user    
+    # if user already login, bind weibo to this user
     # return
     if not request.user.is_anonymous():
         wu.user = request.user
         wu.save()
-        return HttpResponseRedirect('/cabinet/index/')        
+        return HttpResponseRedirect('/cabinet/index/')
 
     # if weibo user bind to a user
     #   login
@@ -1075,7 +1075,7 @@ def email_verify(request):
     if verified:
         return render_to_response('cabinet/email_verify_ok.html', {})
     return render_to_response('cabinet/email_verify_error.html', {})
-        
+
 
 
 @login_required

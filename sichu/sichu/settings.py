@@ -1,5 +1,11 @@
 # Django settings for sichu project.
 
+import dotenv
+dotenv.read_dotenv()
+
+import dj_database_url
+from getenv import env
+
 import os
 import sys
 
@@ -14,16 +20,11 @@ ADMINS = (
 MANAGERS = ADMINS
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sichu',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'TEST_CHARSET': 'gb2312',
-    }
+    'default': dj_database_url.parse(env("DATABASE_URI", "mysql://root:@127.0.0.1:3306/sichu")),
 }
+if DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
+    DATABASES['default']['TEST_CHARSET'] = 'utf8'
+    DATABASES['default']['TEST_COLLATION'] = 'utf8_general_ci'
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -136,6 +137,7 @@ INSTALLED_APPS = (
     'cabinet',
     'apiserver',
     'tagging',
+    'django_nose'
 )
 
 # A sample logging configuration. The only tangible logging
@@ -186,3 +188,5 @@ GX_APPKEY = ''
 GX_MASTERSECRET = ''
 
 DOUBAN_APIKEY = ""
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

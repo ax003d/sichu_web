@@ -1,5 +1,19 @@
 language: python
 python:
   - "2.7"
-install: "pip install -r requirements.txt"
-script: nosetests
+services:
+  - mysql
+install:
+  - pip install -r requirements.txt
+  - pip install coverage==4.0.3
+before_script:
+  - mysql -e 'create database sichu;'
+script:
+  - cd sichu
+  - python manage.py test --with-coverage
+after_success:
+  - coverage report
+  - pip install --quiet python-coveralls
+  - coveralls
+notifications:
+  webhooks: https://hooks.pubu.im/services/xrz176erwzxnt49
