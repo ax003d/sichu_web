@@ -60,3 +60,9 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# local env
+.env
+
+# pycharm project files
+.idea
